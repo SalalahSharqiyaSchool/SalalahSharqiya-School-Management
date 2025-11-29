@@ -5,13 +5,14 @@
     <title>(9-5) صفحة المعلم - صلالة الشرقية للتعليم الأساسي</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* جعل مربع الاختيار والجملة بجانب بعض */
+        /* جعل مربع الاختيار والجملة أفقيًا مع النص على يمين المربع */
         .checkbox-label {
             display: flex;
-            align-items: center; /* لمحاذاة النص مع المربع عموديًا */
-            justify-content: center; /* لتوسيط في الصفحة */
+            align-items: center;
+            justify-content: flex-start; /* المربع على اليسار والنص على اليمين */
             gap: 10px; /* المسافة بين المربع والنص */
             font-size: 22px; /* حجم النص أكبر */
+            direction: ltr; /* النص على يمين المربع */
             margin-top: 10px;
         }
 
@@ -24,7 +25,7 @@
             text-align: center;
             margin: 5px 0;
             width: 100%;
-            max-width: 400px; /* مناسب للحاسوب والهاتف */
+            max-width: 400px;
         }
 
         /* تحسين حجم التوقيع والأزرار */
@@ -106,7 +107,7 @@
 أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
             </p>
 
-            <!-- الجملة بجانب مربع الاختيار -->
+            <!-- الجملة على يمين مربع الاختيار -->
             <label class="checkbox-label">
                 <input type="checkbox" id="agreeCheckbox">
                 <span>لقد قرأت التعهد بالكامل وأوافق عليه</span>
