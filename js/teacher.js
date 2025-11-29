@@ -7,9 +7,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const clearSignature = document.getElementById('clearSignature');
     const canvas = document.getElementById('signaturePad');
 
+    // تهيئة SignaturePad
     const signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgb(255,255,255)' });
     const form = document.getElementById('teacherForm');
 
+    // الحقول مغلقة في البداية
     const disableFields = () => {
         teacherName.disabled = true;
         teacherSpecialty.disabled = true;
@@ -19,6 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     disableFields();
 
+    // تفعيل الحقول بعد وضع علامة صح
     agreeCheckbox.addEventListener('change', () => {
         const enabled = agreeCheckbox.checked;
         teacherName.disabled = !enabled;
@@ -28,8 +31,10 @@ window.addEventListener('DOMContentLoaded', () => {
         clearSignature.disabled = !enabled;
     });
 
+    // مسح التوقيع عند الضغط على زر مسح فقط
     clearSignature.addEventListener('click', () => signaturePad.clear());
 
+    // إرسال البيانات إلى Firebase
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -46,6 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
             timestamp: Date.now()
         };
 
+        // استخدام window.database للتأكد من أنه معرف
         const newRef = window.database.ref('teachers').push();
         newRef.set(teacherData)
             .then(() => {
