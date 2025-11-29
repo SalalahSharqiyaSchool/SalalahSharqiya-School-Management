@@ -5,40 +5,46 @@ body {
     padding: 0;
     direction: rtl;
     background-color: #f9f9f9;
+    text-align: center; /* توسيط النصوص */
 }
 
 header, footer {
     background-color: #004080;
     color: white;
     text-align: center;
-    padding: 15px;
+    padding: 20px;
 }
 
 .logo {
-    width: 100px;
+    width: 120px;
     vertical-align: middle;
-    margin-left: 10px;
+    margin: 0 10px;
 }
 
 main {
-    padding: 25px;
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto; /* توسيط المحتوى */
 }
 
 h1, h2 {
-    margin: 10px 0;
+    margin: 15px 0;
+    font-size: 32px;
 }
 
 input, select, textarea, button {
     display: block;
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 18px; /* تكبير حجم الخط */
-    width: 100%;
+    margin: 15px auto; /* توسيط الحقول */
+    padding: 15px;
+    font-size: 22px; /* تكبير الخط */
+    width: 90%;
+    max-width: 500px; /* الحد الأقصى للعرض */
     box-sizing: border-box;
+    text-align: center;
 }
 
 textarea {
-    min-height: 80px;
+    min-height: 120px;
 }
 
 button {
@@ -46,8 +52,9 @@ button {
     background-color: #004080;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 12px;
+    border-radius: 6px;
+    padding: 15px 20px;
+    font-size: 22px;
 }
 
 button:disabled {
@@ -57,34 +64,47 @@ button:disabled {
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 18px; /* تكبير حجم الخط للجدول */
+    font-size: 20px; /* تكبير الخط للجدول */
+    margin-top: 20px;
 }
 
 th, td {
     border: 1px solid #ccc;
-    padding: 12px;
+    padding: 15px;
     text-align: center;
 }
 
 .signature {
     border: 1px solid #ccc;
     display: block;
-    margin-top: 10px;
+    margin: 15px auto;
+    width: 80%;
+    max-width: 400px;
+    height: 150px;
 }
 
 /* Responsive للهاتف */
 @media (max-width: 768px) {
+    h1, h2 {
+        font-size: 28px;
+    }
+
     input, select, textarea, button {
-        font-size: 20px;
-        padding: 15px;
+        font-size: 24px;
+        padding: 18px;
+        width: 95%;
+    }
+
+    table {
+        font-size: 22px;
     }
 
     th, td {
-        font-size: 20px;
-        padding: 15px;
+        padding: 12px;
     }
 
-    .logo {
-        width: 80px;
+    .signature {
+        width: 95%;
+        height: 180px;
     }
 }
