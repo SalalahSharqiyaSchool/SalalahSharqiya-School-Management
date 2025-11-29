@@ -29,14 +29,14 @@ main {
 
 h1, h2 {
     margin: 15px 0;
-    font-size: 55px;
+    font-size: 50px;
 }
 
 input, select, textarea {
     display: block;
     margin: 15px auto;
     padding: 15px;
-    font-size: 22px;
+    font-size: 35px;
     width: 90%;
     max-width: 500px;
     box-sizing: border-box;
