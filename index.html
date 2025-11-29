@@ -2,8 +2,92 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>  (9-5) صفحة المعلم - صلالة الشرقية للتعليم الأساسي</title>
+    <title>(9-5) صفحة المعلم - صلالة الشرقية للتعليم الأساسي</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* جعل مربع الاختيار والجملة بجانب بعض */
+        .checkbox-label {
+            display: flex;
+            align-items: center; /* لمحاذاة النص مع المربع عموديًا */
+            justify-content: center; /* لتوسيط في الصفحة */
+            gap: 10px; /* المسافة بين المربع والنص */
+            font-size: 22px; /* حجم النص أكبر */
+            margin-top: 10px;
+        }
+
+        /* تكبير حجم الحقول */
+        input#teacherName,
+        select#teacherSpecialty,
+        textarea#teacherNotes {
+            font-size: 22px;
+            padding: 10px;
+            text-align: center;
+            margin: 5px 0;
+            width: 100%;
+            max-width: 400px; /* مناسب للحاسوب والهاتف */
+        }
+
+        /* تحسين حجم التوقيع والأزرار */
+        canvas#signaturePad {
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 400px;
+            height: 120px;
+        }
+
+        button#clearSignature,
+        button#submitBtn {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #0ABAB5; /* أخضر تيفاني */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* تنسيق التعهد */
+        .pledge p {
+            height: 250px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-line;
+            font-size: 18px; /* تكبير الخط */
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Responsive للهواتف */
+        @media (max-width: 600px) {
+            input#teacherName,
+            select#teacherSpecialty,
+            textarea#teacherNotes,
+            canvas#signaturePad {
+                font-size: 24px;
+            }
+
+            .checkbox-label {
+                font-size: 24px;
+            }
+
+            button#clearSignature,
+            button#submitBtn {
+                font-size: 22px;
+                padding: 12px 25px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,15 +98,18 @@
     <main>
         <h2>تعهد المعلم</h2>
         <div id="pledge" class="pledge">
-            <p style="height: 250px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; white-space: pre-line;">
+            <p>
 أتعهد بالالتزام بجميع قوانين وأنظمة مدرسة صلالة الشرقية للتعليم الأساسي، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
 
 أقر بأنني سألتزم بالحضور المبكر إلى المدرسة والانصراف في الوقت المحدد، وسأحافظ على النظام والانضباط داخل الصف وخارجه.
 
 أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
             </p>
-            <label>
-                <input type="checkbox" id="agreeCheckbox"> لقد قرأت التعهد بالكامل وأوافق عليه
+
+            <!-- الجملة بجانب مربع الاختيار -->
+            <label class="checkbox-label">
+                <input type="checkbox" id="agreeCheckbox">
+                <span>لقد قرأت التعهد بالكامل وأوافق عليه</span>
             </label>
         </div>
 
@@ -45,7 +132,7 @@
             </label>
 
             <label>التوقيع:
-                <canvas id="signaturePad" class="signature" width="300" height="120" style="border:1px solid #ccc;"></canvas>
+                <canvas id="signaturePad" class="signature"></canvas>
                 <button type="button" id="clearSignature" disabled>مسح التوقيع</button>
             </label>
 
