@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-
     const agreeCheckbox = document.getElementById('agreeCheckbox');
     const teacherName = document.getElementById('teacherName');
     const teacherSpecialty = document.getElementById('teacherSpecialty');
@@ -9,11 +8,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('signaturePad');
     const form = document.getElementById('teacherForm');
 
-    // تفعيل التوقيع
-    const signaturePad = new SignaturePad(canvas);
+    // تهيئة مكتبة التوقيع
+    const signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(255,255,255)'
+    });
 
-    // تعطيل الحقول أولًا
-    function setDisabledState(state) {
+    // قفل الحقول في البداية
+    function lockFields(state) {
         teacherName.disabled = state;
         teacherSpecialty.disabled = state;
         teacherNotes.disabled = state;
@@ -21,19 +22,17 @@ window.addEventListener('DOMContentLoaded', () => {
         clearSignature.disabled = state;
     }
 
-    setDisabledState(true);
+    lockFields(true);
 
-    // عند وضع علامة صح
+    // تفعيل الحقول عند الموافقة
     agreeCheckbox.addEventListener('change', () => {
-        setDisabledState(!agreeCheckbox.checked);
+        lockFields(!agreeCheckbox.checked);
     });
 
     // مسح التوقيع
-    clearSignature.addEventListener('click', () => {
-        signaturePad.clear();
-    });
+    clearSignature.addEventListener('click', () => signaturePad.clear());
 
-    // إرسال إلى Firebase
+    // حفظ البيانات
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -50,19 +49,14 @@ window.addEventListener('DOMContentLoaded', () => {
             timestamp: Date.now()
         };
 
-        database.ref('teachers').push().set(teacherData)
-        .then(() => {
-            alert("تم حفظ التعهد بنجاح!");
-
-            form.reset();
-            signaturePad.clear();
-            agreeCheckbox.checked = false;
-            setDisabledState(true);
-        })
-        .catch((err) => {
-            console.error(err);
-            alert("حدث خطأ أثناء حفظ البيانات!");
-        });
+        database.ref('teachers').push(teacherData)
+            .then(() => {
+                alert("تم إرسال التعهد بنجاح!");
+                form.reset();
+                signaturePad.clear();
+                lockFields(true);
+                agreeCheckbox.checked = false;
+            })
+            .catch(err => console.error("Firebase Error:", err));
     });
-
 });
