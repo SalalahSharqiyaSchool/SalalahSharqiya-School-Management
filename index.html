@@ -67,9 +67,12 @@
             appId: "1:540330149276:web:228722d3f67b70ffa5f459"
         };
         firebase.initializeApp(firebaseConfig);
-        window.database = firebase.database(); // تعريف database عالمي
+
+        // تعريف database عالمي
+        window.database = firebase.database();
     </script>
 
+    <!-- SignaturePad -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script src="js/teacher.js"></script>
 </body>
