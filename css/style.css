@@ -1,45 +1,90 @@
+/* عام */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     direction: rtl;
+    background-color: #f9f9f9;
 }
 
 header, footer {
     background-color: #004080;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
 }
 
 .logo {
-    width: 80px;
+    width: 100px;
     vertical-align: middle;
     margin-left: 10px;
 }
 
 main {
-    padding: 20px;
+    padding: 25px;
+}
+
+h1, h2 {
+    margin: 10px 0;
 }
 
 input, select, textarea, button {
     display: block;
     margin: 10px 0;
-    padding: 5px;
+    padding: 10px;
+    font-size: 18px; /* تكبير حجم الخط */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 80px;
+}
+
+button {
+    cursor: pointer;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+}
+
+button:disabled {
+    background-color: #888;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 18px; /* تكبير حجم الخط للجدول */
 }
 
 th, td {
     border: 1px solid #ccc;
-    padding: 8px;
+    padding: 12px;
     text-align: center;
 }
 
 .signature {
     border: 1px solid #ccc;
     display: block;
+    margin-top: 10px;
+}
+
+/* Responsive للهاتف */
+@media (max-width: 768px) {
+    input, select, textarea, button {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    th, td {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    .logo {
+        width: 80px;
+    }
 }
