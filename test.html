@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+
+<label>
+    <input type="checkbox" id="agreeCheckbox">
+    أوافق على التعهد
+</label>
+
+<br><br>
+
+<label>الاسم:
+    <input type="text" id="teacherName" disabled>
+</label>
+
+<script>
+    const agreeCheckbox = document.getElementById("agreeCheckbox");
+    const teacherName = document.getElementById("teacherName");
+
+    agreeCheckbox.addEventListener("change", () => {
+        teacherName.disabled = !agreeCheckbox.checked;
+    });
+</script>
+
+</body>
+</html>
