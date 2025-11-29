@@ -13,21 +13,26 @@
 
     <main>
         <h2>تعهد المعلم</h2>
+
         <div id="pledge" class="pledge">
-            <p style="height: 150px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
-                أتعهد بالالتزام بجميع قوانين وأنظمة المدرسة، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
+            <p class="pledge-text">
+                أتعهد بالالتزام بجميع قوانين وأنظمة المدرسة،  
+                وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
             </p>
-            <label>
-                <input type="checkbox" id="agreeCheckbox"> لقد قرأت التعهد بالكامل وأوافق عليه
+
+            <label class="checkbox">
+                <input type="checkbox" id="agreeCheckbox">
+                لقد قرأت التعهد بالكامل وأوافق عليه
             </label>
         </div>
 
         <form id="teacherForm">
             <label>الاسم:
-                <input type="text" id="teacherName" disabled required>
+                <input type="text" id="teacherName" required disabled>
             </label>
+
             <label>التخصص:
-                <select id="teacherSpecialty" disabled required>
+                <select id="teacherSpecialty" required disabled>
                     <option value="">اختر التخصص</option>
                     <option value="رياضيات">رياضيات</option>
                     <option value="علوم">علوم</option>
@@ -36,12 +41,13 @@
                     <option value="تربية رياضية">تربية رياضية</option>
                 </select>
             </label>
+
             <label>ملاحظات:
                 <textarea id="teacherNotes" disabled></textarea>
             </label>
-            
+
             <label>التوقيع:
-                <canvas id="signaturePad" class="signature" width="300" height="100"></canvas>
+                <canvas id="signaturePad" width="300" height="100" class="signature"></canvas>
                 <button type="button" id="clearSignature" disabled>مسح التوقيع</button>
             </label>
 
@@ -59,13 +65,12 @@
 
     <script>
       const firebaseConfig = {
-         apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
-  authDomain: "salalah-sharqiya-school.firebaseapp.com",
-  projectId: "salalah-sharqiya-school",
-  storageBucket: "salalah-sharqiya-school.firebasestorage.app",
-  messagingSenderId: "540330149276",
-  appId: "1:540330149276:web:228722d3f67b70ffa5f459"
-
+        apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
+        authDomain: "salalah-sharqiya-school.firebaseapp.com",
+        projectId: "salalah-sharqiya-school",
+        storageBucket: "salalah-sharqiya-school.firebasestorage.app",
+        messagingSenderId: "540330149276",
+        appId: "1:540330149276:web:228722d3f67b70ffa5f459"
       };
       firebase.initializeApp(firebaseConfig);
       const database = firebase.database();
