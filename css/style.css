@@ -9,7 +9,7 @@ body {
 }
 
 header, footer {
-    background-color: #004080;
+    background-color: #006400; /* أخضر غامق بدلاً من الأزرق */
     color: white;
     text-align: center;
     padding: 20px;
@@ -49,7 +49,7 @@ textarea {
 
 button {
     cursor: pointer;
-    background-color: #004080;
+    background-color: #006400; /* زر أخضر غامق */
     color: white;
     border: none;
     border-radius: 6px;
@@ -90,10 +90,10 @@ th, td {
     }
 
     input, select, textarea, button {
-        font-size: 28px; /* تكبير الخط ليكون واضح جدًا */
-        padding: 12px;   /* تقليل مساحة الحقل لتناسب الشاشة */
+        font-size: 28px;
+        padding: 12px;
         width: 85%;
-        max-width: 350px; /* تصغير الحقول */
+        max-width: 350px;
     }
 
     textarea {
@@ -102,7 +102,7 @@ th, td {
 
     button {
         padding: 12px 15px;
-        font-size: 26px; /* تكبير الخط داخل الزر */
+        font-size: 26px;
     }
 
     table {
@@ -115,7 +115,7 @@ th, td {
 
     .signature {
         width: 85%;
-        max-width: 300px; /* تصغير مساحة التوقيع */
+        max-width: 300px;
         height: 140px;
     }
 }
