@@ -16,12 +16,12 @@ window.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
     clearSignature.disabled = true;
 
-    // تفعيل الحقول عند وضع علامة صح
+    // تفعيل الحقول عند وضع علامة صح على التعهد
     agreeCheckbox.addEventListener('change', () => {
         const enabled = agreeCheckbox.checked;
-        teacherName.disabled = !enabled;
-        teacherSpecialty.disabled = !enabled;
-        teacherNotes.disabled = !enabled;
+        teacherName.disabled = !enabled;         // خانة الاسم تتفعل
+        teacherSpecialty.disabled = !enabled;    // خانة التخصص تتفعل
+        teacherNotes.disabled = !enabled;        // خانة الملاحظات تتفعل
         submitBtn.disabled = !enabled;
         clearSignature.disabled = !enabled;
     });
@@ -29,26 +29,22 @@ window.addEventListener('DOMContentLoaded', () => {
     // مسح التوقيع
     clearSignature.addEventListener('click', () => signaturePad.clear());
 
-    // إرسال البيانات إلى Firebase
+    // إرسال البيانات إلى Firebase (اختياري، يمكن إزالة إذا أردت تجربة فقط)
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-
-        // تحقق من وجود توقيع
         if (signaturePad.isEmpty()) {
             alert("الرجاء إضافة توقيعك قبل الإرسال!");
             return;
         }
 
-        // تجهيز البيانات للإرسال
         const teacherData = {
             name: teacherName.value.trim(),
             specialty: teacherSpecialty.value,
             notes: teacherNotes.value.trim(),
-            signature: signaturePad.toDataURL(), // تحويل التوقيع لصورة
+            signature: signaturePad.toDataURL(),
             timestamp: Date.now()
         };
 
-        // إرسال البيانات
         const newRef = database.ref('teachers').push();
         newRef.set(teacherData)
             .then(() => {
@@ -56,7 +52,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 form.reset();
                 signaturePad.clear();
                 agreeCheckbox.checked = false;
-
-                // إعادة تعطيل الحقول بعد الإرسال
                 teacherName.disabled = true;
                 teacherSpecialty.disabled = true;
+                teacherNotes.disabled = true;
+                submitBtn.disabled = true;
+                clearSignature.disabled = true;
+            })
+            .catch(err => console.error(err));
+    });
+});
