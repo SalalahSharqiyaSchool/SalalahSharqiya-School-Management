@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>صفحة المعلم - صلالة الشرقية للتعليم الأساسي</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <img src="css/school_logo.png" alt="شعار المدرسة" class="logo">
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+    </header>
+
+    <main>
+        <h2>تعهد المعلم</h2>
+        <div id="pledge" class="pledge">
+            <p>
+                أتعهد بالالتزام بجميع قوانين وأنظمة المدرسة، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
+            </p>
+            <label>
+                <input type="checkbox" id="agreeCheckbox"> لقد قرأت التعهد بالكامل وأوافق عليه
+            </label>
+        </div>
+
+        <form id="teacherForm">
+            <label>الاسم:
+                <input type="text" id="teacherName" disabled required>
+            </label>
+            <label>التخصص:
+                <select id="teacherSpecialty" disabled required>
+                    <option value="">اختر التخصص</option>
+                    <option value="رياضيات">رياضيات</option>
+                    <option value="علوم">علوم</option>
+                    <option value="لغة عربية">لغة عربية</option>
+                    <option value="لغة إنجليزية">لغة إنجليزية</option>
+                    <option value="تربية رياضية">تربية رياضية</option>
+                </select>
+            </label>
+            <label>ملاحظات:
+                <textarea id="teacherNotes" disabled></textarea>
+            </label>
+            
+            <label>التوقيع:
+                <canvas id="signaturePad" class="signature" width="300" height="100"></canvas>
+                <button type="button" id="clearSignature" disabled>مسح التوقيع</button>
+            </label>
+
+            <button type="submit" id="submitBtn" disabled>إرسال</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2025 أستاذ فيصل العريبي</p>
+    </footer>
+
+    <script src="js/teacher.js"></script>
+    <script src="js/signature_pad.min.js"></script>
+</body>
+</html>
