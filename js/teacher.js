@@ -29,15 +29,16 @@ window.addEventListener('DOMContentLoaded', () => {
         clearSignature.disabled = !enabled;
     });
 
-    // مسح التوقيع عند الضغط على زر المسح فقط
+    // مسح التوقيع عند الضغط على زر مسح فقط
     clearSignature.addEventListener('click', () => {
         signaturePad.clear();
     });
 
-    // إرسال البيانات إلى Firebase
+    // الإرسال إلى Firebase
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        // تحقق من وجود توقيع
         if (signaturePad.isEmpty()) {
             alert("الرجاء إضافة توقيعك قبل الإرسال!");
             return;
@@ -47,16 +48,18 @@ window.addEventListener('DOMContentLoaded', () => {
             name: teacherName.value.trim(),
             specialty: teacherSpecialty.value,
             notes: teacherNotes.value.trim(),
-            signature: signaturePad.toDataURL(), // يبقى موجود حتى بعد الإرسال
+            signature: signaturePad.toDataURL(), // يبقى ثابت حتى الإرسال
             timestamp: Date.now()
         };
 
-        // حفظ البيانات في Firebase
+        // إرسال البيانات
         const newRef = database.ref('teachers').push();
         newRef.set(teacherData)
             .then(() => {
                 alert("تم إرسال التعهد بنجاح!");
-                form.reset(); // إعادة تعيين الحقول
+
+                // إعادة ضبط النموذج بدون مسح SignaturePad بشكل غير مرغوب
+                form.reset();
                 signaturePad.clear(); // مسح التوقيع بعد الإرسال
                 agreeCheckbox.checked = false;
 
