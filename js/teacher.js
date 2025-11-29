@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+
     const agreeCheckbox = document.getElementById('agreeCheckbox');
     const teacherName = document.getElementById('teacherName');
     const teacherSpecialty = document.getElementById('teacherSpecialty');
@@ -6,32 +7,36 @@ window.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     const clearSignature = document.getElementById('clearSignature');
     const canvas = document.getElementById('signaturePad');
-    const signaturePad = new SignaturePad(canvas);
     const form = document.getElementById('teacherForm');
 
-    // الحقول مغلقة في البداية
-    teacherName.disabled = true;
-    teacherSpecialty.disabled = true;
-    teacherNotes.disabled = true;
-    submitBtn.disabled = true;
-    clearSignature.disabled = true;
+    // تفعيل التوقيع
+    const signaturePad = new SignaturePad(canvas);
 
-    // تفعيل الحقول عند وضع علامة صح
+    // تعطيل الحقول أولًا
+    function setDisabledState(state) {
+        teacherName.disabled = state;
+        teacherSpecialty.disabled = state;
+        teacherNotes.disabled = state;
+        submitBtn.disabled = state;
+        clearSignature.disabled = state;
+    }
+
+    setDisabledState(true);
+
+    // عند وضع علامة صح
     agreeCheckbox.addEventListener('change', () => {
-        const enabled = agreeCheckbox.checked;
-        teacherName.disabled = !enabled;
-        teacherSpecialty.disabled = !enabled;
-        teacherNotes.disabled = !enabled;
-        submitBtn.disabled = !enabled;
-        clearSignature.disabled = !enabled;
+        setDisabledState(!agreeCheckbox.checked);
     });
 
     // مسح التوقيع
-    clearSignature.addEventListener('click', () => signaturePad.clear());
+    clearSignature.addEventListener('click', () => {
+        signaturePad.clear();
+    });
 
-    // إرسال البيانات إلى Firebase
+    // إرسال إلى Firebase
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+
         if (signaturePad.isEmpty()) {
             alert("الرجاء إضافة توقيعك!");
             return;
@@ -45,19 +50,19 @@ window.addEventListener('DOMContentLoaded', () => {
             timestamp: Date.now()
         };
 
-        const newRef = database.ref('teachers').push();
-        newRef.set(teacherData)
-            .then(() => {
-                alert("تم إرسال التعهد بنجاح!");
-                form.reset();
-                signaturePad.clear();
-                agreeCheckbox.checked = false;
-                teacherName.disabled = true;
-                teacherSpecialty.disabled = true;
-                teacherNotes.disabled = true;
-                submitBtn.disabled = true;
-                clearSignature.disabled = true;
-            })
-            .catch(err => console.error(err));
+        database.ref('teachers').push().set(teacherData)
+        .then(() => {
+            alert("تم حفظ التعهد بنجاح!");
+
+            form.reset();
+            signaturePad.clear();
+            agreeCheckbox.checked = false;
+            setDisabledState(true);
+        })
+        .catch((err) => {
+            console.error(err);
+            alert("حدث خطأ أثناء حفظ البيانات!");
+        });
     });
+
 });
