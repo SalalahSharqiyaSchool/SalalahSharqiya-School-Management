@@ -1,42 +1,45 @@
 body {
-    font-family: "Cairo", sans-serif;
-    background: #f5f5f5;
-    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
 }
 
-header {
-    background: #004c8c;
-    color: #fff;
-    padding: 20px;
+header, footer {
+    background-color: #004080;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
 
 .logo {
-    width: 90px;
+    width: 80px;
+    vertical-align: middle;
+    margin-left: 10px;
 }
 
 main {
-    background: #fff;
-    width: 80%;
-    margin: 20px auto;
-    padding: 25px;
-    border-radius: 12px;
+    padding: 20px;
 }
 
-label {
+input, select, textarea, button {
     display: block;
-    margin: 15px 0;
+    margin: 10px 0;
+    padding: 5px;
 }
 
-input, select, textarea {
-    width: 80%;
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
     padding: 8px;
-    border: 1px solid #aaa;
-    border-radius: 6px;
+    text-align: center;
 }
 
 .signature {
-    border: 2px dashed #444;
-    margin: 10px 0;
-    background: #fff;
-    cursor: crosshair;
+    border: 1px solid #ccc;
+    display: block;
 }
