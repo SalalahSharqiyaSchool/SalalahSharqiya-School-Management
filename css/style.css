@@ -54,7 +54,7 @@ button {
     border: none;
     border-radius: 6px;
     padding: 15px 20px;
-    font-size: 22px;
+    font-size: 35px;
 }
 
 button:disabled {
