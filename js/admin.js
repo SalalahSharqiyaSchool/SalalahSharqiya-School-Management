@@ -2,12 +2,17 @@ window.addEventListener('DOMContentLoaded', () => {
     const teachersTableBody = document.querySelector('#teachersTable tbody');
 
     const addTeacherToTable = (teacher) => {
+        // تحويل الطابع الزمني إلى تاريخ ووقت مقروء
+        const date = new Date(teacher.timestamp);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')} ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`;
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${teacher.name}</td>
             <td>${teacher.specialty}</td>
             <td>${teacher.notes}</td>
             <td>${teacher.signature ? `<img src="${teacher.signature}" alt="توقيع" width="150">` : ''}</td>
+            <td>${formattedDate}</td>
         `;
         teachersTableBody.appendChild(tr);
     };
