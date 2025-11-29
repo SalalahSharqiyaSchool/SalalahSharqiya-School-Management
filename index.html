@@ -7,27 +7,19 @@
 </head>
 <body>
     <header>
-        <img src="css/logo.png" alt="شعار المدرسة" class="logo">
+        <img src="css/school_logo.png" alt="شعار المدرسة" class="logo">
         <h1>صلالة الشرقية للتعليم الأساسي</h1>
     </header>
 
     <main>
         <h2>تعهد المعلم</h2>
         <div id="pledge" class="pledge">
-            <p style="height: 150px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
-               أتعهد بموجب هذا التعهد بالالتزام التام بجميع قوانين وأنظمة مدرسة (اسم المدرسة)، بما في ذلك القوانين الداخلية واللوائح المنظمة للعملية التعليمية، والتزامي بأعلى معايير الانضباط والاحترافية في أداء واجباتي التعليمية.
+            <p style="height: 180px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; white-space: pre-line;">
+أتعهد بالالتزام بجميع قوانين وأنظمة مدرسة صلالة الشرقية للتعليم الأساسي، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
 
-كما أتعهد بالالتزام بما يلي:
+أقر بأنني سألتزم بالحضور المبكر إلى المدرسة والانصراف في الوقت المحدد، وسأحافظ على النظام والانضباط داخل الصف وخارجه.
 
-الحضور المبكر إلى المدرسة قبل بداية الدوام الرسمي.
-
-توقيع بصمة الحضور والانصراف يوميًا بدقة وصدق.
-
-حضور جميع الحصص الدراسية المقررة دون تغيب.
-
-حضور طابور الصباح والمشاركة فيه بانتظام.
-
-وأقر بأن أي مخالفة لهذا التعهد ستعرضني للإجراءات التأديبية المقررة من إدارة المدرسة.
+أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
             </p>
             <label>
                 <input type="checkbox" id="agreeCheckbox"> لقد قرأت التعهد بالكامل وأوافق عليه
@@ -68,20 +60,21 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
-            authDomain: "salalah-sharqiya-school.firebaseapp.com",
-            projectId: "salalah-sharqiya-school",
-            storageBucket: "salalah-sharqiya-school.firebasestorage.app",
-            messagingSenderId: "540330149276",
-            appId: "1:540330149276:web:228722d3f67b70ffa5f459"
-        };
-        firebase.initializeApp(firebaseConfig);
-        window.database = firebase.database();
+      const firebaseConfig = {
+          apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
+          authDomain: "salalah-sharqiya-school.firebaseapp.com",
+          projectId: "salalah-sharqiya-school",
+          storageBucket: "salalah-sharqiya-school.firebasestorage.app",
+          messagingSenderId: "540330149276",
+          appId: "1:540330149276:web:228722d3f67b70ffa5f459"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
     </script>
 
-    <!-- SignaturePad -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script src="js/teacher.js"></script>
 </body>
