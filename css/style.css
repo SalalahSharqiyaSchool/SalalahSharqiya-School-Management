@@ -9,7 +9,7 @@ body {
 }
 
 header, footer {
-    background-color: #006400; /* أخضر غامق بدلاً من الأزرق */
+    background-color: #93C572; /* أخضر بيستاشي */
     color: white;
     text-align: center;
     padding: 20px;
@@ -49,7 +49,7 @@ textarea {
 
 button {
     cursor: pointer;
-    background-color: #006400; /* زر أخضر غامق */
+    background-color: #93C572; /* زر أخضر بيستاشي */
     color: white;
     border: none;
     border-radius: 6px;
