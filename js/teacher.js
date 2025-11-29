@@ -6,57 +6,57 @@ window.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     const clearSignature = document.getElementById('clearSignature');
     const canvas = document.getElementById('signaturePad');
+    const signaturePad = new SignaturePad(canvas);
     const form = document.getElementById('teacherForm');
 
-    // تهيئة مكتبة التوقيع
-    const signaturePad = new SignaturePad(canvas, {
-        backgroundColor: 'rgb(255,255,255)'
-    });
+    // الحقول مغلقة في البداية
+    teacherName.disabled = true;
+    teacherSpecialty.disabled = true;
+    teacherNotes.disabled = true;
+    submitBtn.disabled = true;
+    clearSignature.disabled = true;
 
-    // قفل الحقول في البداية
-    function lockFields(state) {
-        teacherName.disabled = state;
-        teacherSpecialty.disabled = state;
-        teacherNotes.disabled = state;
-        submitBtn.disabled = state;
-        clearSignature.disabled = state;
-    }
-
-    lockFields(true);
-
-    // تفعيل الحقول عند الموافقة
+    // تفعيل الحقول عند وضع علامة صح
     agreeCheckbox.addEventListener('change', () => {
-        lockFields(!agreeCheckbox.checked);
+        const enabled = agreeCheckbox.checked;
+        teacherName.disabled = !enabled;
+        teacherSpecialty.disabled = !enabled;
+        teacherNotes.disabled = !enabled;
+        submitBtn.disabled = !enabled;
+        clearSignature.disabled = !enabled;
     });
 
     // مسح التوقيع
     clearSignature.addEventListener('click', () => signaturePad.clear());
 
-    // حفظ البيانات
+    // إرسال البيانات إلى Firebase
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        // تحقق من وجود توقيع
         if (signaturePad.isEmpty()) {
-            alert("الرجاء إضافة توقيعك!");
+            alert("الرجاء إضافة توقيعك قبل الإرسال!");
             return;
         }
 
+        // تجهيز البيانات للإرسال
         const teacherData = {
-            name: teacherName.value,
+            name: teacherName.value.trim(),
             specialty: teacherSpecialty.value,
-            notes: teacherNotes.value,
-            signature: signaturePad.toDataURL(),
+            notes: teacherNotes.value.trim(),
+            signature: signaturePad.toDataURL(), // تحويل التوقيع لصورة
             timestamp: Date.now()
         };
 
-        database.ref('teachers').push(teacherData)
+        // إرسال البيانات
+        const newRef = database.ref('teachers').push();
+        newRef.set(teacherData)
             .then(() => {
                 alert("تم إرسال التعهد بنجاح!");
                 form.reset();
                 signaturePad.clear();
-                lockFields(true);
                 agreeCheckbox.checked = false;
-            })
-            .catch(err => console.error("Firebase Error:", err));
-    });
-});
+
+                // إعادة تعطيل الحقول بعد الإرسال
+                teacherName.disabled = true;
+                teacherSpecialty.disabled = true;
