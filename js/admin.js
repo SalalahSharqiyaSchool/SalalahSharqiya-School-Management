@@ -12,22 +12,18 @@ window.addEventListener('DOMContentLoaded', () => {
         teachersTableBody.appendChild(tr);
     };
 
-    // التحقق من وجود Firebase
     if (!window.database) {
-        console.error('خطأ: Firebase غير مهيأ بشكل صحيح. تحقق من تهيئة Firebase قبل تحميل admin.js');
+        console.error('خطأ: Firebase غير مهيأ. تحقق من التهيئة قبل تحميل admin.js');
         return;
     }
 
     const teachersRef = window.database.ref('teachers');
 
-    // قراءة البيانات مع Debug
     teachersRef.on('value', (snapshot) => {
-        console.clear(); // لمسح Console قبل كل تحديث
+        console.clear();
         console.log('تم جلب البيانات من Firebase');
-        
         teachersTableBody.innerHTML = '';
         const data = snapshot.val();
-        
         if (data) {
             console.log('البيانات المستلمة:', data);
             Object.values(data).forEach(teacher => addTeacherToTable(teacher));
