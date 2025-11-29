@@ -4,8 +4,8 @@ body {
     margin: 0;
     padding: 0;
     direction: rtl;
+    text-align: center;
     background-color: #f9f9f9;
-    text-align: center; /* توسيط النصوص */
 }
 
 header, footer {
@@ -24,7 +24,7 @@ header, footer {
 main {
     padding: 30px;
     max-width: 900px;
-    margin: 0 auto; /* توسيط المحتوى */
+    margin: 0 auto;
 }
 
 h1, h2 {
@@ -34,11 +34,11 @@ h1, h2 {
 
 input, select, textarea, button {
     display: block;
-    margin: 15px auto; /* توسيط الحقول */
+    margin: 15px auto;
     padding: 15px;
-    font-size: 22px; /* تكبير الخط */
+    font-size: 22px;
     width: 90%;
-    max-width: 500px; /* الحد الأقصى للعرض */
+    max-width: 500px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -64,7 +64,7 @@ button:disabled {
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 20px; /* تكبير الخط للجدول */
+    font-size: 20px;
     margin-top: 20px;
 }
 
@@ -90,9 +90,19 @@ th, td {
     }
 
     input, select, textarea, button {
-        font-size: 24px;
-        padding: 18px;
-        width: 95%;
+        font-size: 28px; /* تكبير الخط ليكون واضح جدًا */
+        padding: 12px;   /* تقليل مساحة الحقل لتناسب الشاشة */
+        width: 85%;
+        max-width: 350px; /* تصغير الحقول */
+    }
+
+    textarea {
+        min-height: 100px;
+    }
+
+    button {
+        padding: 12px 15px;
+        font-size: 26px; /* تكبير الخط داخل الزر */
     }
 
     table {
@@ -100,11 +110,12 @@ th, td {
     }
 
     th, td {
-        padding: 12px;
+        padding: 10px;
     }
 
     .signature {
-        width: 95%;
-        height: 180px;
+        width: 85%;
+        max-width: 300px; /* تصغير مساحة التوقيع */
+        height: 140px;
     }
 }
