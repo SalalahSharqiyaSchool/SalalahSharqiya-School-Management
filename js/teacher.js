@@ -7,17 +7,22 @@ window.addEventListener('DOMContentLoaded', () => {
     const clearSignature = document.getElementById('clearSignature');
     const canvas = document.getElementById('signaturePad');
 
-    // تهيئة SignaturePad مرة واحدة فقط
-    const signaturePad = new SignaturePad(canvas);
+    // تهيئة SignaturePad مرة واحدة فقط عند تحميل الصفحة
+    const signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(255,255,255)' // خلفية بيضاء حتى يظهر عند حفظ الصورة
+    });
 
     const form = document.getElementById('teacherForm');
 
     // الحقول مغلقة في البداية
-    teacherName.disabled = true;
-    teacherSpecialty.disabled = true;
-    teacherNotes.disabled = true;
-    submitBtn.disabled = true;
-    clearSignature.disabled = true;
+    const disableFields = () => {
+        teacherName.disabled = true;
+        teacherSpecialty.disabled = true;
+        teacherNotes.disabled = true;
+        submitBtn.disabled = true;
+        clearSignature.disabled = true;
+    };
+    disableFields();
 
     // تفعيل الحقول عند وضع علامة صح على التعهد
     agreeCheckbox.addEventListener('change', () => {
@@ -34,11 +39,10 @@ window.addEventListener('DOMContentLoaded', () => {
         signaturePad.clear();
     });
 
-    // الإرسال إلى Firebase
+    // إرسال البيانات إلى Firebase
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // تحقق من وجود توقيع
         if (signaturePad.isEmpty()) {
             alert("الرجاء إضافة توقيعك قبل الإرسال!");
             return;
@@ -48,27 +52,20 @@ window.addEventListener('DOMContentLoaded', () => {
             name: teacherName.value.trim(),
             specialty: teacherSpecialty.value,
             notes: teacherNotes.value.trim(),
-            signature: signaturePad.toDataURL(), // يبقى ثابت حتى الإرسال
+            signature: signaturePad.toDataURL(), // يبقى موجود حتى بعد رسمه
             timestamp: Date.now()
         };
 
-        // إرسال البيانات
         const newRef = database.ref('teachers').push();
         newRef.set(teacherData)
             .then(() => {
                 alert("تم إرسال التعهد بنجاح!");
 
-                // إعادة ضبط النموذج بدون مسح SignaturePad بشكل غير مرغوب
+                // إعادة ضبط النموذج
                 form.reset();
-                signaturePad.clear(); // مسح التوقيع بعد الإرسال
+                signaturePad.clear(); // يمسح التوقيع بعد الإرسال فقط
                 agreeCheckbox.checked = false;
-
-                // إعادة تعطيل الحقول
-                teacherName.disabled = true;
-                teacherSpecialty.disabled = true;
-                teacherNotes.disabled = true;
-                submitBtn.disabled = true;
-                clearSignature.disabled = true;
+                disableFields();
             })
             .catch(err => {
                 console.error(err);
