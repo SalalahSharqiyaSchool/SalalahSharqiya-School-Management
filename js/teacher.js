@@ -1,4 +1,3 @@
-
 window.addEventListener('DOMContentLoaded', () => {
     const agreeCheckbox = document.getElementById('agreeCheckbox');
     const teacherName = document.getElementById('teacherName');
@@ -9,6 +8,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('signaturePad');
     const signaturePad = new SignaturePad(canvas);
 
+    // اجعل الحقول مغلقة في البداية
+    teacherName.disabled = true;
+    teacherSpecialty.disabled = true;
+    teacherNotes.disabled = true;
+    submitBtn.disabled = true;
+    clearSignature.disabled = true;
+
+    // تفعيل الحقول عند وضع علامة صح على التعهد
     agreeCheckbox.addEventListener('change', () => {
         const enabled = agreeCheckbox.checked;
         teacherName.disabled = !enabled;
@@ -18,10 +25,10 @@ window.addEventListener('DOMContentLoaded', () => {
         clearSignature.disabled = !enabled;
     });
 
-    clearSignature.addEventListener('click', () => {
-        signaturePad.clear();
-    });
+    // مسح التوقيع
+    clearSignature.addEventListener('click', () => signaturePad.clear());
 
+    // إرسال النموذج (حاليًا مجرد عرض تنبيه)
     const form = document.getElementById('teacherForm');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -30,32 +37,14 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const teacherData = {
-            name: teacherName.value,
-            specialty: teacherSpecialty.value,
-            notes: teacherNotes.value,
-            signature: signaturePad.toDataURL()
-        };
-
-        // حفظ البيانات في ملف JSON (محليًا للتجربة)
-        fetch('data/teachers.json')
-            .then(res => res.json())
-            .then(data => {
-                data.push(teacherData);
-                fetch('data/teachers.json', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data, null, 2)
-                }).then(() => {
-                    alert('تم إرسال التعهد بنجاح!');
-                    form.reset();
-                    signaturePad.clear();
-                    agreeCheckbox.checked = false;
-                    teacherName.disabled = true;
-                    teacherSpecialty.disabled = true;
-                    teacherNotes.disabled = true;
-                    submitBtn.disabled = true;
-                });
-            }).catch(err => console.error(err));
+        alert("تم التفعيل والبيانات جاهزة للإرسال!");
+        form.reset();
+        signaturePad.clear();
+        agreeCheckbox.checked = false;
+        teacherName.disabled = true;
+        teacherSpecialty.disabled = true;
+        teacherNotes.disabled = true;
+        submitBtn.disabled = true;
+        clearSignature.disabled = true;
     });
 });
