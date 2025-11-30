@@ -12,203 +12,274 @@ header, footer {
   background-color: #004080;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 15px 10px;
 }
 
 .logo {
-  width: 120px;
+  width: 100px;
   vertical-align: middle;
-  margin: 0 10px;
+  margin-bottom: 5px;
 }
 
-.header-inner {
+.site-header .header-inner, .site-title {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .site-title h1 {
-  margin: 0;
-  font-size: 32px;
+  font-size: 28px;
+  margin: 5px 0;
 }
 
-.site-title .subtitle {
-  margin: 0;
-  font-size: 18px;
-  color: #fff;
+.subtitle {
+  font-size: 16px;
 }
 
-/* الحاوية الرئيسية */
-main.container {
-  padding: 30px;
+/* Main container */
+.container, .admin-container {
   max-width: 900px;
-  margin: 0 auto;
+  margin: 20px auto;
+  padding: 10px;
 }
 
-/* بطاقة التعهد ونموذج المعلم */
+/* Cards */
 .card {
   background: #fff;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 15px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: right;
 }
 
 .card-title {
-  font-size: 24px;
-  margin-bottom: 12px;
+  font-size: 22px;
+  margin-bottom: 10px;
   color: #004080;
 }
 
 .pledge-text {
-  font-size: 18px;
-  text-align: right;
+  font-size: 16px;
   line-height: 1.6;
+  border: 1px solid #ccc;
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  background: #fdfdfd;
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  font-size: 18px;
-  direction: ltr;
-  margin-top: 10px;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 30px;
-  height: 30px;
-}
-
-/* حقول النموذج */
+/* Form */
 .form-label {
   display: block;
   text-align: right;
-  font-size: 18px;
-  margin-bottom: 10px;
+  margin: 10px 0 5px;
+  font-size: 16px;
 }
 
 input, select, textarea {
   width: 100%;
-  max-width: 500px;
-  font-size: 18px;
+  max-width: 100%;
+  font-size: 16px;
   padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  margin-top: 3px;
   box-sizing: border-box;
-  text-align: center;
-}
-
-/* مساحة التوقيع */
-.signature-area {
-  margin-top: 20px;
-}
-
-canvas#signaturePad {
-  width: 100%;
-  max-width: 500px;
-  height: 150px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  border-radius: 6px;
 }
 
-/* الأزرار */
-.actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+textarea {
+  min-height: 100px;
 }
 
+/* Buttons */
 .btn {
-  border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 18px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 16px;
+  margin: 5px 2px;
 }
 
 .btn.primary {
   background-color: #0ABAB5;
   color: #fff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  border: none;
 }
 
 .btn.primary:hover {
-  background-color: #08a3a0;
-  transform: translateY(-2px);
+  background-color: #079A95;
 }
 
 .btn.outline {
   background-color: #fff;
   color: #0ABAB5;
   border: 2px solid #0ABAB5;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.15);
 }
 
-.btn.outline:hover {
-  background-color: #0ABAB5;
-  color: #fff;
-  transform: translateY(-2px);
+.btn.ghost {
+  background-color: #eee;
+  color: #333;
+  border: none;
 }
 
-.btn.secondary {
-  background: linear-gradient(135deg, #004080, #0ABAB5);
-  color: #fff;
+.actions {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.status {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Signature */
+.signature-area canvas {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.signature-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.sig-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Checkbox label */
+.checkbox-label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: bold;
-  box-shadow: 0 5px 8px rgba(0,0,0,0.25);
-}
-
-.btn.secondary:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-}
-
-.btn-logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-/* الرسائل */
-.status {
-  margin-top: 12px;
+  gap: 8px;
   font-size: 16px;
-  color: #004080;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+/* Admin table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  overflow-x: auto;
+}
+
+.admin-table th, .admin-table td {
+  border: 1px solid #e6e9ef;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.sig-img {
+  max-width: 100px;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .actions .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .btn-logo {
-    width: 28px;
-    height: 28px;
-  }
-
+@media (max-width: 768px) {
   .site-title h1 {
-    font-size: 24px;
+    font-size: 22px;
   }
 
-  .site-title .subtitle {
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  input, select, textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .pledge-text {
+    font-size: 14px;
+    max-height: 200px;
+  }
+
+  .signature-area canvas {
+    height: 120px;
+  }
+
+  .checkbox-label {
+    font-size: 14px;
+  }
+
+  .admin-table th, .admin-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .sig-img {
+    max-width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-title h1 {
+    font-size: 20px;
+  }
+
+  .card-title {
     font-size: 16px;
+  }
+
+  input, select, textarea {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .pledge-text {
+    font-size: 13px;
+    max-height: 180px;
+  }
+
+  .signature-area canvas {
+    height: 100px;
+  }
+
+  .checkbox-label {
+    font-size: 13px;
+  }
+
+  .admin-table th, .admin-table td {
+    font-size: 11px;
+    padding: 4px;
+  }
+
+  .sig-img {
+    max-width: 60px;
   }
 }
