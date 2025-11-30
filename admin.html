@@ -3,48 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>لوحة المدير — تعهدات المعلمين</title>
+  <title>لوحة المدير — التعهدات</title>
   <link rel="stylesheet" href="css/style.css">
-
   <style>
-    /* هيدر مخصص */
-    header.site-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 20px;
-      background-color: #004080;
-      color: #fff;
-      flex-wrap: wrap;
-    }
-
-    header.site-header img.logo {
-      height: 80px;
-    }
-
-    h1.admin-main-title {
-      font-size: 36px;
-      margin: 0;
-      line-height: 1.2;
-    }
-
-    .school-name {
-      font-size: 20px;
-      font-weight: normal;
-      color: #fff;
-    }
-
-    h2.admin-subtitle {
-      font-size: 24px;
-      color: #fff;
-      margin: 10px 0 0 0;
-    }
-
-    /* Container الإدارة */
+    /* ---------- إدارة الجدول والتجاوب ---------- */
     .admin-container {
       max-width: 1100px;
       margin: 20px auto;
-      padding: 15px;
+      padding: 12px;
     }
 
     .admin-controls {
@@ -53,63 +19,121 @@
       align-items: center;
       justify-content: flex-end;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+    }
+
+    header.site-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    header.site-header img.logo {
+      height: 80px; /* حجم أكبر */
+    }
+
+    h1.admin-main-title {
+      font-size: 36px;
+      margin: 0;
+    }
+
+    h2.admin-subtitle {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+      background-color: #0ABAB5;
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
     }
 
     table.admin-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
+      min-width: 700px; /* للحفاظ على تناسق الجدول */
+    }
+
+    table.admin-table th,
+    table.admin-table td {
+      border: 1px solid #e6e9ef;
+      padding: 10px;
+      text-align: center;
       font-size: 16px;
     }
 
-    table.admin-table th, table.admin-table td {
-      border: 1px solid #e6e9ef;
-      padding: 8px;
-      text-align: center;
-      background: #fff;
-      font-size: 16px;
+    table.admin-table th {
+      background-color: #0ABAB5;
+      color: #fff;
+      font-size: 17px;
     }
 
     .sig-img {
       max-width: 120px;
       height: auto;
-      border-radius: 6px;
+      border-radius: 5px;
       border: 1px solid #ccc;
     }
 
     .small-btn {
-      font-size: 13px;
+      font-size: 14px;
       padding: 6px 10px;
       border-radius: 6px;
-      cursor: pointer;
-      background-color: #0ABAB5;
-      color: #fff;
-      border: none;
+      margin: 2px;
     }
 
-    .small-btn:hover {
-      background-color: #089a99;
-    }
-
-    /* Responsive */
+    /* Responsive - الهاتف */
     @media (max-width: 768px) {
       header.site-header {
         flex-direction: column;
-        text-align: center;
       }
       header.site-header img.logo { height: 60px; }
       h1.admin-main-title { font-size: 28px; }
-      .school-name { display: block; font-size: 16px; }
-      h2.admin-subtitle { font-size: 18px; padding: 5px; }
-      table.admin-table th, table.admin-table td { font-size: 14px; padding: 6px; }
+      h2.admin-subtitle { font-size: 18px; padding: 8px; }
+      table.admin-table th, table.admin-table td { font-size: 14px; padding: 8px; }
       .sig-img { max-width: 100px; }
+      .small-btn { font-size: 12px; padding: 5px 8px; }
     }
   </style>
+</head>
+<body>
+  <header class="site-header">
+    <img src="css/logo.png" alt="شعار المدرسة" class="logo">
+    <div>
+      <h1 class="admin-main-title">لوحة المدير</h1>
+      <h2 class="admin-subtitle">استعراض وطباعة تعهدات المعلمين</h2>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="admin-controls">
+      <button onclick="location.reload()" class="btn ghost small-btn">تحديث</button>
+      <a href="index.html" class="btn outline small-btn">العودة لصفحة التعهد</a>
+    </div>
+
+    <p id="adminStatus" style="color:#555;margin-top:12px">تحميل التعهدات…</p>
+
+    <div class="table-wrapper">
+      <table id="pledgesTable" class="admin-table"></table>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 — لوحة المدير</p>
+  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
-  <script defer>
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
       authDomain: "salalah-sharqiya-school.firebaseapp.com",
@@ -120,6 +144,10 @@
     };
 
     window.addEventListener("DOMContentLoaded", () => {
+      if (typeof firebase === "undefined") {
+        document.body.innerHTML = "<p>Firebase غير محمّل.</p>";
+        return;
+      }
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
       const table = document.getElementById("pledgesTable");
@@ -150,7 +178,7 @@
           tr.innerHTML = `
             <td>${escapeHtml(row.name)}</td>
             <td>${escapeHtml(row.specialty)}</td>
-            <td style="max-width:220px;word-wrap:break-word;text-align:right">${escapeHtml(row.notes || "")}</td>
+            <td style="max-width:200px;word-wrap:break-word;text-align:right">${escapeHtml(row.notes || "")}</td>
             <td>${sigCell}</td>
             <td>${date}</td>
             <td>
@@ -167,12 +195,13 @@
           const v = s.val();
           if (!v) return alert("سجل غير موجود");
           const w = window.open("", "_blank");
-          w.document.write(`<h2>لوحة المدير — مدرسة صلالة الشرقية للتعليم الأساسي (5-9)</h2>`);
-          w.document.write(`<h3>تعهد — ${escapeHtml(v.name)}</h3>`);
+          w.document.write(`<h2>تعهد — ${escapeHtml(v.name)}</h2>`);
           w.document.write(`<p><strong>التخصص:</strong> ${escapeHtml(v.specialty)}</p>`);
           w.document.write(`<p><strong>الملاحظات:</strong> ${escapeHtml(v.notes || "")}</p>`);
           w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp||Date.now()).toLocaleString('ar-EG')}</p>`);
           if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:400px;border:1px solid #ccc;margin-top:10px">`);
+          w.document.write(`<p><strong>المدرسة:</strong> صلالة الشرقية للتعليم الأساسي</p>`);
+          w.document.write(`<img src="css/logo.png" style="height:80px;margin-top:5px">`);
           w.print();
         });
       };
@@ -186,31 +215,5 @@
       }
     });
   </script>
-</head>
-
-<body>
-  <header class="site-header">
-    <img src="css/logo.png" alt="شعار المدرسة" class="logo">
-    <div>
-      <h1 class="admin-main-title">
-        لوحة المدير — <span class="school-name">مدرسة صلالة الشرقية للتعليم الأساسي (5-9)</span>
-      </h1>
-      <h2 class="admin-subtitle">استعراض وطباعة تعهدات المعلمين</h2>
-    </div>
-  </header>
-
-  <main class="admin-container">
-    <div class="admin-controls">
-      <button onclick="location.reload()" class="small-btn">تحديث</button>
-      <a href="index.html" class="small-btn">العودة لصفحة التعهد</a>
-    </div>
-
-    <p id="adminStatus" style="color:#555;margin-top:12px">تحميل التعهدات…</p>
-    <table id="pledgesTable" class="admin-table"></table>
-  </main>
-
-  <footer class="site-footer">
-    <p>© 2025 — لوحة المدير</p>
-  </footer>
 </body>
 </html>
