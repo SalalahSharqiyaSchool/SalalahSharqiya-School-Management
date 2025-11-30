@@ -1,181 +1,98 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>(9-5) صفحة المعلم - صلالة الشرقية للتعليم الأساسي</title>
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        /* جعل مربع الاختيار والجملة أفقيًا مع النص على يمين المربع */
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start; /* المربع على اليسار والنص على اليمين */
-            gap: 5px; /* المسافة بين المربع والنص */
-            font-size: 22px; /* حجم النص أكبر */
-            direction: ltr; /* النص على يمين المربع */
-            margin-top: 10px;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>تعهد المعلم — صلالة الشرقية للتعليم الأساسي</title>
 
-        /* تكبير مربع الاختيار */
-        .checkbox-label input[type="checkbox"] {
-            width: 35px;  /* العرض */
-            height: 35px; /* الارتفاع */
-            cursor: pointer;
-        }
+  <link rel="stylesheet" href="css/style.css">
 
-        /* تكبير حجم الحقول */
-        input#teacherName,
-        select#teacherSpecialty,
-        textarea#teacherNotes {
-            font-size: 22px;
-            padding: 10px;
-            text-align: center;
-            margin: 5px 0;
-            width: 100%;
-            max-width: 400px;
-        }
+  <!-- Signature Pad -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js" defer></script>
 
-        /* تحسين حجم التوقيع والأزرار */
-        canvas#signaturePad {
-            border: 1px solid #ccc;
-            width: 100%;
-            max-width: 400px;
-            height: 120px;
-        }
+  <!-- Firebase (compat for simple Realtime DB) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
 
-        button#clearSignature,
-        button#submitBtn {
-            font-size: 20px;
-            padding: 10px 20px;
-            margin: 5px;
-            background-color: #0ABAB5; /* أخضر تيفاني */
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        button:disabled {
-            background-color: #aaa;
-            cursor: not-allowed;
-        }
-
-        /* تنسيق التعهد */
-        .pledge p {
-            height: 250px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            white-space: pre-line;
-            font-size: 18px; /* تكبير الخط */
-        }
-
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Responsive للهواتف */
-        @media (max-width: 600px) {
-            input#teacherName,
-            select#teacherSpecialty,
-            textarea#teacherNotes,
-            canvas#signaturePad {
-                font-size: 24px;
-            }
-
-            .checkbox-label {
-                font-size: 50px;
-            }
-
-            button#clearSignature,
-            button#submitBtn {
-                font-size: 22px;
-                padding: 12px 25px;
-            }
-
-            .checkbox-label input[type="checkbox"] {
-                width: 50px;
-                height: 50px;
-            }
-        }
-    </style>
+  <!-- Main JS -->
+  <script src="js/teacher.js" defer></script>
 </head>
 <body>
-    <header>
-        <img src="css/logo.png" alt="شعار المدرسة" class="logo">
-        <h1>  صلالة الشرقية للتعليم الأساسي (5-9) </h1>
-    </header>
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="css/logo.png" alt="شعار المدرسة" class="logo">
+      <div class="site-title">
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+        <p class="subtitle">(المرحلة 5-9) — صفحة التعهد</p>
+      </div>
+    </div>
+  </header>
 
-    <main>
-        <h2>تعهد المعلم</h2>
-        <div id="pledge" class="pledge">
-            <p>
+  <main class="container">
+    <section class="card pledge-card" aria-labelledby="pledgeTitle">
+      <h2 id="pledgeTitle" class="card-title">تعهد المعلم</h2>
+      <p class="pledge-text" id="pledgeText" tabindex="0">
 أتعهد بالالتزام بجميع قوانين وأنظمة مدرسة صلالة الشرقية للتعليم الأساسي، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
-
+<br><br>
 أقر بأنني سألتزم بالحضور المبكر إلى المدرسة والانصراف في الوقت المحدد، وسأحافظ على النظام والانضباط داخل الصف وخارجه.
-
+<br><br>
 أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
-            </p>
+      </p>
 
-            <!-- الجملة على يمين مربع الاختيار -->
-            <label class="checkbox-label">
-                <input type="checkbox" id="agreeCheckbox">
-                <span>لقد قرأت التعهد بالكامل وأوافق عليه</span>
-            </label>
+      <label class="checkbox-label" for="agreeCheckbox">
+        <input type="checkbox" id="agreeCheckbox">
+        <span>لقد قرأت التعهد بالكامل وأوافق عليه</span>
+      </label>
+    </section>
+
+    <form id="teacherForm" class="card form-card" autocomplete="off" novalidate>
+      <h2 class="card-title">معلومات المعلم</h2>
+
+      <label class="form-label">الاسم
+        <input type="text" id="teacherName" placeholder="اكتب اسمك الكامل" required>
+      </label>
+
+      <label class="form-label">التخصص
+        <select id="teacherSpecialty" required>
+          <option value="">اختر التخصص</option>
+          <option>رياضيات</option>
+          <option>علوم</option>
+          <option>لغة عربية</option>
+          <option>لغة إنجليزية</option>
+          <option>تربية رياضية</option>
+        </select>
+      </label>
+
+      <label class="form-label">ملاحظات
+        <textarea id="teacherNotes" placeholder="ملاحظات إضافية (إن وُجدت)"></textarea>
+      </label>
+
+      <div class="signature-area">
+        <label class="form-label full">التوقيع</label>
+        <div class="signature-controls">
+          <canvas id="signaturePad" width="1000" height="300" aria-label="مساحة التوقيع"></canvas>
+          <div class="sig-buttons">
+            <button type="button" id="clearSignature" class="btn ghost" disabled>مسح</button>
+            <button type="button" id="saveSignature" class="btn ghost" disabled>حفظ كصورة</button>
+          </div>
         </div>
+        <small class="hint">رسم توقيعك داخل المربع. استخدم زر الحفظ لحفظ نسخة محلية قبل الإرسال (اختياري).</small>
+      </div>
 
-        <form id="teacherForm">
-            <label font-size: 22px >الاسم:
-                <input type="text" id="teacherName" disabled required>
-            </label>
-            <label>التخصص:
-                <select id="teacherSpecialty" disabled required>
-                    <option value="">اختر التخصص</option>
-                    <option value="رياضيات">رياضيات</option>
-                    <option value="علوم">علوم</option>
-                    <option value="لغة عربية">لغة عربية</option>
-                    <option value="لغة إنجليزية">لغة إنجليزية</option>
-                    <option value="تربية رياضية">تربية رياضية</option>
-                </select>
-            </label>
-            <label>ملاحظات:
-                <textarea id="teacherNotes" disabled></textarea>
-            </label>
+      <div class="actions">
+        <button type="submit" id="submitBtn" class="btn primary" disabled>إرسال التعهد</button>
+        <button type="reset" id="resetBtn" class="btn outline">إعادة ضبط</button>
+      </div>
 
-            <label>التوقيع:
-                <canvas id="signaturePad" class="signature"></canvas>
-                <button type="button" id="clearSignature" disabled>مسح التوقيع</button>
-            </label>
+      <p id="statusMessage" class="status" aria-live="polite"></p>
+    </form>
+  </main>
 
-            <button type="submit" id="submitBtn" disabled>إرسال</button>
-        </form>
-    </main>
+  <footer class="site-footer">
+    <p>© 2025 جميع الحقوق محفوظة للأستاذ فيصل العريبي — صلالة الشرقية للتعليم الأساسي</p>
+    <a href="admin.html" class="admin-link" title="صفحة المدير">صفحة المدير</a>
+  </footer>
 
-    <footer>
-        <p>© 2025 جميع الحقوق محفوظة للأستاذ فيصل العريبي</p>
-    </footer>
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <script>
-      const firebaseConfig = {
-          apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
-          authDomain: "salalah-sharqiya-school.firebaseapp.com",
-          projectId: "salalah-sharqiya-school",
-          storageBucket: "salalah-sharqiya-school.firebasestorage.app",
-          messagingSenderId: "540330149276",
-          appId: "1:540330149276:web:228722d3f67b70ffa5f459"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-    <script src="js/teacher.js"></script>
+  <!-- Firebase config and minimal initialization are in teacher.js -->
 </body>
 </html>
