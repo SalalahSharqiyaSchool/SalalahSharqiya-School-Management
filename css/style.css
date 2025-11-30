@@ -9,7 +9,7 @@ body {
 }
 /* تكبير حجم النصوص: الاسم – التخصص – الملاحظات – التوقيع */
 form label {
-    font-size: 40px;
+    font-size:30px;
     font-weight: bold;
     display: block;
     margin-top: 15px;
