@@ -3,18 +3,91 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>لوحة المدير — تعهدات المعلمين</title>
+  <title>لوحة المدير — التعهدات</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* إضافات خفيفة لجدول الإدارة */
-    .admin-container{max-width:1100px;margin:26px auto;padding:12px}
-    .admin-controls{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-    table.admin-table{width:100%;border-collapse:collapse;margin-top:12px}
-    table.admin-table th, table.admin-table td{
-      border:1px solid #e6e9ef;padding:10px;text-align:center;font-size:15px;background: #fff;
+    /* Header Titles */
+    .site-title h1 {
+      font-size: 32px;
+      margin-bottom: 5px;
+      color: #004080;
     }
-    .sig-img{max-width:160px;height:auto;border-radius:8px;border:1px solid #e3e7ee}
-    .small-btn{font-size:13px;padding:8px 10px;border-radius:8px}
+
+    .site-title .subtitle {
+      font-size: 20px;
+      color: #0070b0;
+    }
+
+    /* Admin container */
+    .admin-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    .admin-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    /* Table */
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      table-layout: auto;
+      font-size: 16px;
+    }
+
+    table.admin-table th, table.admin-table td {
+      border: 1px solid #e6e9ef;
+      padding: 6px 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .sig-img {
+      max-width: 100px;
+      height: auto;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .small-btn {
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      table.admin-table {
+        font-size: 14px;
+      }
+      .sig-img {
+        max-width: 80px;
+      }
+      .small-btn {
+        font-size: 12px;
+        padding: 5px 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      table.admin-table {
+        font-size: 12px;
+      }
+      .sig-img {
+        max-width: 60px;
+      }
+      .small-btn {
+        font-size: 11px;
+        padding: 4px 6px;
+      }
+    }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
@@ -28,17 +101,13 @@
       messagingSenderId: "540330149276",
       appId: "1:540330149276:web:228722d3f67b70ffa5f459"
     };
+
     window.addEventListener("DOMContentLoaded", () => {
-      if (typeof firebase === "undefined") {
-        document.body.innerHTML = "<p>Firebase غير محمّل.</p>";
-        return;
-      }
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
       const table = document.getElementById("pledgesTable");
       const status = document.getElementById("adminStatus");
 
-      // load data
       const ref = db.ref("teacherPledges");
       ref.on("value", snapshot => {
         table.innerHTML = '';
@@ -48,10 +117,10 @@
           return;
         }
         status.textContent = "";
-        // header
+
         const thead = document.createElement("thead");
         thead.innerHTML = `<tr>
-          <th>الاسم</th><th>التخصص</th><th>ملاحظات</th><th>التوقيع</th><th>التاريخ</th><th>إجراءات</th>
+          <th>الاسم</th><th>التخصص</th><th>الملاحظات</th><th>التوقيع</th><th>التاريخ</th><th>إجراءات</th>
         </tr>`;
         table.appendChild(thead);
 
@@ -64,12 +133,11 @@
           tr.innerHTML = `
             <td>${escapeHtml(row.name)}</td>
             <td>${escapeHtml(row.specialty)}</td>
-            <td style="max-width:280px;word-wrap:break-word;text-align:right">${escapeHtml(row.notes || "")}</td>
+            <td style="max-width:200px;word-wrap:break-word;text-align:right">${escapeHtml(row.notes || "")}</td>
             <td>${sigCell}</td>
             <td>${date}</td>
             <td>
               <button class="small-btn" onclick="printRow('${key}')">طباعة</button>
-              <button class="small-btn" onclick="downloadJSON('${key}')">تنزيل JSON</button>
             </td>
           `;
           tbody.appendChild(tr);
@@ -82,24 +150,13 @@
           const v = s.val();
           if (!v) return alert("سجل غير موجود");
           const w = window.open("", "_blank");
-          w.document.write(`<h2>تعهد — ${escapeHtml(v.name)}</h2>`);
+          w.document.write(`<h1 style="font-size:28px;">لوحة المدير</h1>`);
+          w.document.write(`<h2 style="font-size:24px;">تعهد — ${escapeHtml(v.name)}</h2>`);
           w.document.write(`<p><strong>التخصص:</strong> ${escapeHtml(v.specialty)}</p>`);
           w.document.write(`<p><strong>الملاحظات:</strong> ${escapeHtml(v.notes || "")}</p>`);
           w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp||Date.now()).toLocaleString('ar-EG')}</p>`);
-          if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:500px;border:1px solid #ccc">`);
+          if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:400px;border:1px solid #ccc;margin-top:5px;">`);
           w.print();
-        });
-      };
-
-      window.downloadJSON = function(key){
-        db.ref('teacherPledges/' + key).get().then(s => {
-          const v = s.val();
-          if (!v) return alert("سجل غير موجود");
-          const blob = new Blob([JSON.stringify(v, null, 2)], {type:'application/json'});
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = `pledge_${v.name.replace(/\s+/g,'_')}_${key}.json`;
-          a.click();
         });
       };
 
@@ -118,8 +175,8 @@
     <div class="header-inner">
       <img src="css/logo.png" alt="شعار" class="logo">
       <div class="site-title">
-        <h1>لوحة المدير — التعهدات</h1>
-        <p class="subtitle">استعراض وطباعة تعهدات المعلمين</p>
+        <h1>لوحة المدير</h1>
+        <p class="subtitle">استعراض وطباعة التعهدات</p>
       </div>
     </div>
   </header>
