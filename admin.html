@@ -260,18 +260,62 @@
     }
 
     function printRow(key) {
-      db.ref("teacherPledges/" + key).get().then(s => {
-        const v = s.val();
-        const w = window.open("", "_blank");
-        w.document.write(`<h2>تعهد — ${v.name}</h2>`);
-        w.document.write(`<p><strong>التخصص:</strong> ${v.specialty}</p>`);
-        w.document.write(`<p><strong>الملاحظات:</strong> ${v.notes || ""}</p>`);
-        w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp).toLocaleString("ar-EG")}</p>`);
-        if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:350px;">`);
-        w.document.write(`<br><br><img src="css/logo.png" style="height:80px;">`);
-        w.print();
-      });
-    }
+  db.ref("teacherPledges/" + key).get().then(s => {
+    const v = s.val();
+    if (!v) return alert("السجل غير موجود");
+
+    const w = window.open("", "_blank");
+    w.document.write(`
+      <html lang="ar">
+      <head>
+        <meta charset="UTF-8">
+        <title>تعهد المعلم - ${v.name}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 30px; line-height: 1.6; }
+          header { text-align: center; margin-bottom: 30px; }
+          header img { height: 80px; margin-bottom: 10px; }
+          h1 { font-size: 28px; color: #0ABAB5; margin: 10px 0; }
+          h2 { font-size: 24px; margin: 15px 0; }
+          .pledge-text { font-size: 18px; margin-bottom: 30px; white-space: pre-line; }
+          .teacher-info { font-size: 18px; margin-bottom: 30px; }
+          .teacher-info p { margin: 6px 0; }
+          footer { text-align: center; margin-top: 40px; font-size: 16px; color: #555; }
+          img.signature { max-height: 120px; border: 1px solid #ccc; border-radius: 6px; }
+        </style>
+      </head>
+      <body>
+        <header>
+          <img src="css/logo.png" alt="شعار المدرسة">
+          <h1>مدرسة صلالة الشرقية للتعليم الأساسي (5-9)</h1>
+          <h2>تعهد المعلم</h2>
+        </header>
+
+        <div class="pledge-text">
+أتعهد بالالتزام بجميع قوانين وأنظمة مدرسة صلالة الشرقية للتعليم الأساسي، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
+
+أقر بأنني سألتزم بالحضور المبكر إلى المدرسة والانصراف في الوقت المحدد، وسأحافظ على النظام والانضباط داخل الصف وخارجه.
+
+أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
+        </div>
+
+        <div class="teacher-info">
+          <p><strong>اسم المعلم:</strong> ${v.name}</p>
+          <p><strong>التخصص:</strong> ${v.specialty}</p>
+          <p><strong>الملاحظات:</strong> ${v.notes || "-"}</p>
+          ${v.signature ? `<p><strong>التوقيع:</strong><br><img src="${v.signature}" class="signature"></p>` : ""}
+        </div>
+
+        <footer>
+          جميع الحقوق محفوظة للأستاذ فيصل العريبي - مدرسة صلالة الشرقية للتعليم الأساسي
+        </footer>
+      </body>
+      </html>
+    `);
+    w.document.close();
+    w.print();
+  });
+}
+
   </script>
 
 </body>
