@@ -1,141 +1,150 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>لوحة المدير — تعهدات المعلمين</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* إضافات خفيفة لجدول الإدارة */
-    .admin-container{max-width:1100px;margin:26px auto;padding:12px}
-    .admin-controls{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-    table.admin-table{width:100%;border-collapse:collapse;margin-top:12px}
-    table.admin-table th, table.admin-table td{
-      border:1px solid #e6e9ef;padding:10px;text-align:center;font-size:15px;background: #fff;
-    }
-    .sig-img{max-width:160px;height:auto;border-radius:8px;border:1px solid #e3e7ee}
-    .small-btn{font-size:13px;padding:8px 10px;border-radius:8px}
-  </style>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
-      authDomain: "salalah-sharqiya-school.firebaseapp.com",
-      projectId: "salalah-sharqiya-school",
-      storageBucket: "salalah-sharqiya-school.firebasestorage.app",
-      messagingSenderId: "540330149276",
-      appId: "1:540330149276:web:228722d3f67b70ffa5f459"
-    };
-    window.addEventListener("DOMContentLoaded", () => {
-      if (typeof firebase === "undefined") {
-        document.body.innerHTML = "<p>Firebase غير محمّل.</p>";
-        return;
-      }
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
-      const table = document.getElementById("pledgesTable");
-      const status = document.getElementById("adminStatus");
-
-      // load data
-      const ref = db.ref("teacherPledges");
-      ref.on("value", snapshot => {
-        table.innerHTML = '';
-        const data = snapshot.val();
-        if (!data) {
-          status.textContent = "لا توجد تعهدات حتى الآن.";
-          return;
+    <meta charset="UTF-8">
+    <title>صفحة المدير - صلالة الشرقية للتعليم الأساسي</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* تنسيق جدول البيانات */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        status.textContent = "";
-        // header
-        const thead = document.createElement("thead");
-        thead.innerHTML = `<tr>
-          <th>الاسم</th><th>التخصص</th><th>ملاحظات</th><th>التوقيع</th><th>التاريخ</th><th>إجراءات</th>
-        </tr>`;
-        table.appendChild(thead);
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
 
-        const tbody = document.createElement("tbody");
-        Object.keys(data).reverse().forEach(key => {
-          const row = data[key];
-          const tr = document.createElement("tr");
-          const date = new Date(row.timestamp || Date.now()).toLocaleString('ar-EG');
-          const sigCell = row.signature ? `<img src="${row.signature}" class="sig-img" alt="توقيع">` : `<span>لا توقيع</span>`;
-          tr.innerHTML = `
-            <td>${escapeHtml(row.name)}</td>
-            <td>${escapeHtml(row.specialty)}</td>
-            <td style="max-width:280px;word-wrap:break-word;text-align:right">${escapeHtml(row.notes || "")}</td>
-            <td>${sigCell}</td>
-            <td>${date}</td>
-            <td>
-              <button class="small-btn" onclick="printRow('${key}')">طباعة</button>
-              <button class="small-btn" onclick="downloadJSON('${key}')">تنزيل JSON</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-      });
+        /* زر الطباعة */
+        #printBtn {
+            background-color: #0ABAB5;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
 
-      window.printRow = function(key){
-        db.ref('teacherPledges/' + key).get().then(s => {
-          const v = s.val();
-          if (!v) return alert("سجل غير موجود");
-          const w = window.open("", "_blank");
-          w.document.write(`<h2>تعهد — ${escapeHtml(v.name)}</h2>`);
-          w.document.write(`<p><strong>التخصص:</strong> ${escapeHtml(v.specialty)}</p>`);
-          w.document.write(`<p><strong>الملاحظات:</strong> ${escapeHtml(v.notes || "")}</p>`);
-          w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp||Date.now()).toLocaleString('ar-EG')}</p>`);
-          if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:500px;border:1px solid #ccc">`);
-          w.print();
-        });
-      };
+        #printBtn:hover {
+            background-color: #079A95;
+        }
 
-      window.downloadJSON = function(key){
-        db.ref('teacherPledges/' + key).get().then(s => {
-          const v = s.val();
-          if (!v) return alert("سجل غير موجود");
-          const blob = new Blob([JSON.stringify(v, null, 2)], {type:'application/json'});
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = `pledge_${v.name.replace(/\s+/g,'_')}_${key}.json`;
-          a.click();
-        });
-      };
-
-      function escapeHtml(str=''){
-        return String(str)
-          .replaceAll('&','&amp;')
-          .replaceAll('<','&lt;')
-          .replaceAll('>','&gt;')
-          .replaceAll('"','&quot;');
-      }
-    });
-  </script>
+        .logo-print {
+            width: 80px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <img src="css/logo.png" alt="شعار" class="logo">
-      <div class="site-title">
-        <h1>لوحة المدير — التعهدات</h1>
-        <p class="subtitle">استعراض وطباعة تعهدات المعلمين</p>
-      </div>
-    </div>
-  </header>
+    <header>
+        <img src="css/logo.png" alt="شعار المدرسة" class="logo">
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+    </header>
 
-  <main class="admin-container">
-    <div class="admin-controls">
-      <button onclick="location.reload()" class="btn ghost small-btn">تحديث</button>
-      <a href="index.html" class="btn outline small-btn">العودة لصفحة التعهد</a>
-    </div>
+    <main>
+        <h2>قائمة التعهدات</h2>
+        <button id="printBtn">طباعة التعهد</button>
 
-    <p id="adminStatus" style="color:#555;margin-top:12px">تحميل التعهدات…</p>
-    <table id="pledgesTable" class="admin-table"></table>
-  </main>
+        <table id="teachersTable">
+            <thead>
+                <tr>
+                    <th>الاسم</th>
+                    <th>التخصص</th>
+                    <th>الملاحظات</th>
+                    <th>التوقيع</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- البيانات سيتم تعبئتها من Firebase -->
+            </tbody>
+        </table>
+    </main>
 
-  <footer class="site-footer">
-    <p>© 2025 — لوحة المدير</p>
-  </footer>
+    <footer>
+        <p>© 2025 جميع الحقوق محفوظة للأستاذ فيصل العريبي</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+          apiKey: "AIzaSyA7LDHKX4XKKfCEbgmpEDQ5NHj6XghxZlE",
+          authDomain: "salalah-sharqiya-school.firebaseapp.com",
+          databaseURL: "https://salalah-sharqiya-school-default-rtdb.firebaseio.com/",
+          projectId: "salalah-sharqiya-school",
+          storageBucket: "salalah-sharqiya-school.firebasestorage.app",
+          messagingSenderId: "540330149276",
+          appId: "1:540330149276:web:228722d3f67b70ffa5f459"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      const tableBody = document.querySelector('#teachersTable tbody');
+
+      // جلب البيانات من Firebase
+      database.ref('teacherPledges').on('value', snapshot => {
+          tableBody.innerHTML = ''; // مسح الجدول
+          snapshot.forEach(childSnap => {
+              const data = childSnap.val();
+              const row = document.createElement('tr');
+
+              row.innerHTML = `
+                  <td>${data.name}</td>
+                  <td>${data.specialty}</td>
+                  <td>${data.notes}</td>
+                  <td><img src="${data.signature}" style="width:120px; height:80px;"></td>
+              `;
+              tableBody.appendChild(row);
+          });
+      });
+
+      // زر الطباعة
+      document.getElementById('printBtn').addEventListener('click', () => {
+          let printContent = `
+              <div style="text-align:center;">
+                  <img src="css/logo.png" class="logo-print">
+                  <h2>صلالة الشرقية للتعليم الأساسي</h2>
+                  <h3>تعهد المعلم</h3>
+                  <p style="border:1px solid #ccc; padding:10px; font-size:18px;">
+أتعهد بالالتزام بجميع قوانين وأنظمة مدرسة صلالة الشرقية للتعليم الأساسي، وأتعهد بالقيام بمسؤوليتي المهنية بأمانة وصدق.
+أقر بأنني سألتزم بالحضور المبكر إلى المدرسة والانصراف في الوقت المحدد، وسأحافظ على النظام والانضباط داخل الصف وخارجه.
+أتعهد بالتصرف بما يحقق المصلحة التعليمية للطلاب، وأدرك أن أي مخالفة لهذه التعهدات قد تؤدي إلى اتخاذ الإجراءات النظامية اللازمة.
+                  </p>
+              </div>
+              <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:16px;">
+                  <thead>
+                      <tr>
+                          <th style="border:1px solid #ccc; padding:8px;">الاسم</th>
+                          <th style="border:1px solid #ccc; padding:8px;">التخصص</th>
+                          <th style="border:1px solid #ccc; padding:8px;">الملاحظات</th>
+                          <th style="border:1px solid #ccc; padding:8px;">التوقيع</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+          `;
+
+          // إضافة البيانات للجدول
+          const rows = tableBody.querySelectorAll('tr');
+          rows.forEach(r => {
+              printContent += `<tr>${r.innerHTML}</tr>`;
+          });
+
+          printContent += `</tbody></table>`;
+
+          const printWindow = window.open('', '', 'height=700,width=900');
+          printWindow.document.write('<html><head><title>طباعة التعهد</title></head><body>');
+          printWindow.document.write(printContent);
+          printWindow.document.write('</body></html>');
+          printWindow.document.close();
+          printWindow.print();
+      });
+    </script>
 </body>
 </html>
