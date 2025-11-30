@@ -111,19 +111,21 @@ textarea {
   background-color: #079A95;
 }
 /* زر صفحة المدير بحجم زر إعادة ضبط */
-.btn.secondary {
-    background-color: #004080; /* أزرق داكن */
-    color: #fff;
+/* زر صفحة المدير مشابه لزر إرسال التعهد */
+.btn.admin-btn {
+    background-color: #0ABAB5; /* نفس لون زر إرسال التعهد */
+    color: #fff;               /* نص أبيض */
     border: none;
     border-radius: 6px;
-    padding: 12px 15px;   /* نفس padding لزر إعادة ضبط */
-    font-size: 26px;      /* نفس حجم زر إعادة ضبط */
+    padding: 15px 20px;        /* نفس padding لزر إرسال التعهد */
+    font-size: 30px;           /* نفس حجم خط زر إرسال التعهد */
     cursor: pointer;
-    margin-left: 8px;     /* مسافة بين الأزرار */
+    margin-left: 8px;          /* مسافة بين الأزرار */
 }
-.btn.secondary:hover {
-    background-color: #0059b3; /* تأثير عند المرور على الزر */
+.btn.admin-btn:hover {
+    background-color: #089a9a; /* تأثير hover */
 }
+
 
 
 .btn.outline {
