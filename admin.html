@@ -31,7 +31,18 @@
       font-size: 24px;
       text-align: center;
       margin-bottom: 20px;
-      color: #333;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: #0ABAB5;
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+
+    h2.admin-subtitle img {
+      height: 40px;
     }
 
     .table-wrapper {
@@ -79,7 +90,8 @@
     /* Responsive - الهاتف */
     @media (max-width: 768px) {
       h1.admin-main-title { font-size: 28px; }
-      h2.admin-subtitle { font-size: 20px; }
+      h2.admin-subtitle { font-size: 18px; padding: 8px; }
+      h2.admin-subtitle img { height: 30px; }
       table.admin-table th, table.admin-table td { font-size: 14px; padding: 8px; }
       .sig-img { max-width: 100px; }
       .small-btn { font-size: 12px; padding: 5px 8px; }
@@ -89,7 +101,10 @@
 <body>
   <header class="site-header">
     <h1 class="admin-main-title">لوحة المدير</h1>
-    <h2 class="admin-subtitle">استعراض وطباعة تعهدات المعلمين</h2>
+    <h2 class="admin-subtitle">
+      <img src="css/logo.png" alt="شعار المدرسة">
+      استعراض وطباعة تعهدات المعلمين
+    </h2>
   </header>
 
   <main class="admin-container">
@@ -152,7 +167,7 @@
           const row = data[key];
           const date = new Date(row.timestamp || Date.now()).toLocaleString('ar-EG');
           const sigCell = row.signature ? `<img src="${row.signature}" class="sig-img" alt="توقيع">` : `<span>لا توقيع</span>`;
-          tr = document.createElement("tr");
+          const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${escapeHtml(row.name)}</td>
             <td>${escapeHtml(row.specialty)}</td>
