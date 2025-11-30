@@ -6,51 +6,64 @@
   <title>لوحة المدير — التعهدات</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* Header Titles */
-    .site-title h1 {
-      font-size: 32px;
-      margin-bottom: 5px;
-      color: #004080;
-    }
-
-    .site-title .subtitle {
-      font-size: 20px;
-      color: #0070b0;
-    }
-
-    /* Admin container */
+    /* ---------- إدارة الجدول والتجاوب ---------- */
     .admin-container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 20px auto;
-      padding: 10px;
+      padding: 12px;
     }
 
     .admin-controls {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
+      align-items: center;
       justify-content: flex-end;
-      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
-    /* Table */
+    h1.admin-main-title {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    h2.admin-subtitle {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+    }
+
     table.admin-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
-      table-layout: auto;
+      min-width: 700px; /* للحفاظ على تناسق الجدول */
+    }
+
+    table.admin-table th,
+    table.admin-table td {
+      border: 1px solid #e6e9ef;
+      padding: 10px;
+      text-align: center;
       font-size: 16px;
     }
 
-    table.admin-table th, table.admin-table td {
-      border: 1px solid #e6e9ef;
-      padding: 6px 8px;
-      text-align: center;
-      vertical-align: middle;
+    table.admin-table th {
+      background-color: #0ABAB5;
+      color: #fff;
+      font-size: 17px;
     }
 
     .sig-img {
-      max-width: 100px;
+      max-width: 120px;
       height: auto;
       border-radius: 5px;
       border: 1px solid #ccc;
@@ -60,35 +73,41 @@
       font-size: 14px;
       padding: 6px 10px;
       border-radius: 6px;
+      margin: 2px;
     }
 
-    /* Responsive adjustments */
+    /* Responsive - الهاتف */
     @media (max-width: 768px) {
-      table.admin-table {
-        font-size: 14px;
-      }
-      .sig-img {
-        max-width: 80px;
-      }
-      .small-btn {
-        font-size: 12px;
-        padding: 5px 8px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      table.admin-table {
-        font-size: 12px;
-      }
-      .sig-img {
-        max-width: 60px;
-      }
-      .small-btn {
-        font-size: 11px;
-        padding: 4px 6px;
-      }
+      h1.admin-main-title { font-size: 28px; }
+      h2.admin-subtitle { font-size: 20px; }
+      table.admin-table th, table.admin-table td { font-size: 14px; padding: 8px; }
+      .sig-img { max-width: 100px; }
+      .small-btn { font-size: 12px; padding: 5px 8px; }
     }
   </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="admin-main-title">لوحة المدير</h1>
+    <h2 class="admin-subtitle">استعراض وطباعة تعهدات المعلمين</h2>
+  </header>
+
+  <main class="admin-container">
+    <div class="admin-controls">
+      <button onclick="location.reload()" class="btn ghost small-btn">تحديث</button>
+      <a href="index.html" class="btn outline small-btn">العودة لصفحة التعهد</a>
+    </div>
+
+    <p id="adminStatus" style="color:#555;margin-top:12px">تحميل التعهدات…</p>
+
+    <div class="table-wrapper">
+      <table id="pledgesTable" class="admin-table"></table>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 — لوحة المدير</p>
+  </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js" defer></script>
@@ -103,6 +122,10 @@
     };
 
     window.addEventListener("DOMContentLoaded", () => {
+      if (typeof firebase === "undefined") {
+        document.body.innerHTML = "<p>Firebase غير محمّل.</p>";
+        return;
+      }
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
       const table = document.getElementById("pledgesTable");
@@ -120,16 +143,16 @@
 
         const thead = document.createElement("thead");
         thead.innerHTML = `<tr>
-          <th>الاسم</th><th>التخصص</th><th>الملاحظات</th><th>التوقيع</th><th>التاريخ</th><th>إجراءات</th>
+          <th>الاسم</th><th>التخصص</th><th>ملاحظات</th><th>التوقيع</th><th>التاريخ</th><th>إجراءات</th>
         </tr>`;
         table.appendChild(thead);
 
         const tbody = document.createElement("tbody");
         Object.keys(data).reverse().forEach(key => {
           const row = data[key];
-          const tr = document.createElement("tr");
           const date = new Date(row.timestamp || Date.now()).toLocaleString('ar-EG');
           const sigCell = row.signature ? `<img src="${row.signature}" class="sig-img" alt="توقيع">` : `<span>لا توقيع</span>`;
+          tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${escapeHtml(row.name)}</td>
             <td>${escapeHtml(row.specialty)}</td>
@@ -150,12 +173,13 @@
           const v = s.val();
           if (!v) return alert("سجل غير موجود");
           const w = window.open("", "_blank");
-          w.document.write(`<h1 style="font-size:28px;">لوحة المدير</h1>`);
-          w.document.write(`<h2 style="font-size:24px;">تعهد — ${escapeHtml(v.name)}</h2>`);
+          w.document.write(`<h2>تعهد — ${escapeHtml(v.name)}</h2>`);
           w.document.write(`<p><strong>التخصص:</strong> ${escapeHtml(v.specialty)}</p>`);
           w.document.write(`<p><strong>الملاحظات:</strong> ${escapeHtml(v.notes || "")}</p>`);
           w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp||Date.now()).toLocaleString('ar-EG')}</p>`);
-          if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:400px;border:1px solid #ccc;margin-top:5px;">`);
+          if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:400px;border:1px solid #ccc;margin-top:10px">`);
+          w.document.write(`<p><strong>المدرسة:</strong> صلالة الشرقية للتعليم الأساسي</p>`);
+          w.document.write(`<img src="css/logo.png" style="height:60px;margin-top:5px">`);
           w.print();
         });
       };
@@ -169,30 +193,5 @@
       }
     });
   </script>
-</head>
-<body>
-  <header class="site-header">
-    <div class="header-inner">
-      <img src="css/logo.png" alt="شعار" class="logo">
-      <div class="site-title">
-        <h1>لوحة المدير</h1>
-        <p class="subtitle">استعراض وطباعة التعهدات</p>
-      </div>
-    </div>
-  </header>
-
-  <main class="admin-container">
-    <div class="admin-controls">
-      <button onclick="location.reload()" class="btn ghost small-btn">تحديث</button>
-      <a href="index.html" class="btn outline small-btn">العودة لصفحة التعهد</a>
-    </div>
-
-    <p id="adminStatus" style="color:#555;margin-top:12px">تحميل التعهدات…</p>
-    <table id="pledgesTable" class="admin-table"></table>
-  </main>
-
-  <footer class="site-footer">
-    <p>© 2025 — لوحة المدير</p>
-  </footer>
 </body>
 </html>
