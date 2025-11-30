@@ -21,10 +21,22 @@
       flex-wrap: wrap;
     }
 
+    header.site-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    header.site-header img.logo {
+      height: 80px; /* حجم أكبر */
+    }
+
     h1.admin-main-title {
       font-size: 36px;
-      text-align: center;
-      margin-bottom: 5px;
+      margin: 0;
     }
 
     h2.admin-subtitle {
@@ -32,17 +44,9 @@
       text-align: center;
       margin-bottom: 20px;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
       background-color: #0ABAB5;
       padding: 10px 15px;
       border-radius: 8px;
-    }
-
-    h2.admin-subtitle img {
-      height: 40px;
     }
 
     .table-wrapper {
@@ -89,9 +93,12 @@
 
     /* Responsive - الهاتف */
     @media (max-width: 768px) {
+      header.site-header {
+        flex-direction: column;
+      }
+      header.site-header img.logo { height: 60px; }
       h1.admin-main-title { font-size: 28px; }
       h2.admin-subtitle { font-size: 18px; padding: 8px; }
-      h2.admin-subtitle img { height: 30px; }
       table.admin-table th, table.admin-table td { font-size: 14px; padding: 8px; }
       .sig-img { max-width: 100px; }
       .small-btn { font-size: 12px; padding: 5px 8px; }
@@ -100,11 +107,11 @@
 </head>
 <body>
   <header class="site-header">
-    <h1 class="admin-main-title">لوحة المدير</h1>
-    <h2 class="admin-subtitle">
-      <img src="css/logo.png" alt="شعار المدرسة">
-      استعراض وطباعة تعهدات المعلمين
-    </h2>
+    <img src="css/logo.png" alt="شعار المدرسة" class="logo">
+    <div>
+      <h1 class="admin-main-title">لوحة المدير</h1>
+      <h2 class="admin-subtitle">استعراض وطباعة تعهدات المعلمين</h2>
+    </div>
   </header>
 
   <main class="admin-container">
@@ -194,7 +201,7 @@
           w.document.write(`<p><strong>التاريخ:</strong> ${new Date(v.timestamp||Date.now()).toLocaleString('ar-EG')}</p>`);
           if (v.signature) w.document.write(`<img src="${v.signature}" style="max-width:400px;border:1px solid #ccc;margin-top:10px">`);
           w.document.write(`<p><strong>المدرسة:</strong> صلالة الشرقية للتعليم الأساسي</p>`);
-          w.document.write(`<img src="css/logo.png" style="height:60px;margin-top:5px">`);
+          w.document.write(`<img src="css/logo.png" style="height:80px;margin-top:5px">`);
           w.print();
         });
       };
