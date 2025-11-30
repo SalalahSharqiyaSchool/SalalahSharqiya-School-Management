@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title> ( 9-5) تعهد المعلم — صلالة الشرقية للتعليم الأساسي</title>
+  <title>تعهد المعلم — صلالة الشرقية للتعليم الأساسي</title>
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -22,8 +22,8 @@
     <div class="header-inner">
       <img src="css/logo.png" alt="شعار المدرسة" class="logo">
       <div class="site-title">
-        <h1>    صلالة الشرقية للتعليم الأساسي  ( 5-9)   </h1>
-        <p class="subtitle">  صفحة التعهد</p>
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+        <p class="subtitle">(المرحلة 5-9) — صفحة التعهد</p>
       </div>
     </div>
   </header>
@@ -60,10 +60,6 @@
           <option>لغة عربية</option>
           <option>لغة إنجليزية</option>
           <option>تربية رياضية</option>
-          <option>تقنية المعلومات</option>
-          <option>تربية إسلامية</option>
-          <option>فنون تشكيلية</option>
-          <option>موسيقى</option>
         </select>
       </label>
 
@@ -80,12 +76,16 @@
             <button type="button" id="saveSignature" class="btn ghost" disabled>حفظ كصورة</button>
           </div>
         </div>
-        <small class="hint">ارسم توقيعك داخل المربع. استخدم زر الحفظ لحفظ نسخة محلية قبل الإرسال (اختياري).</small>
+        <small class="hint">رسم توقيعك داخل المربع. استخدم زر الحفظ لحفظ نسخة محلية قبل الإرسال (اختياري).</small>
       </div>
 
       <div class="actions">
         <button type="submit" id="submitBtn" class="btn primary" disabled>إرسال التعهد</button>
         <button type="reset" id="resetBtn" class="btn outline">إعادة ضبط</button>
+        <button type="button" id="adminPageBtn" class="btn secondary" onclick="window.location.href='admin.html'">
+          <img src="css/logo.png" alt="شعار المدرسة" class="btn-logo">
+          لوحة المدير
+        </button>
       </div>
 
       <p id="statusMessage" class="status" aria-live="polite"></p>
@@ -93,10 +93,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>© 2025 جميع الحقوق محفوظة للأستاذ فيصل العريبي — مدرسة صلالة الشرقية للتعليم الأساسي</p>
-    <a href="admin.html" class="admin-link" title="صفحة المدير">صفحة المدير</a>
+    <p>© 2025 جميع الحقوق محفوظة للأستاذ فيصل العريبي — صلالة الشرقية للتعليم الأساسي</p>
   </footer>
-
-  <!-- Firebase config and minimal initialization are in teacher.js -->
 </body>
 </html>
