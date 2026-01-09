@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة براعم المروج | تلاوة وحفظ</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;900&family=Zain:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4CAF50; /* أخضر مريح */
+            --secondary: #FFC107; /* أصفر مشرق */
+            --accent: #2196F3; /* أزرق سماوي */
+            --bg: #F0F9FF;
+            --text: #2C3E50;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* شريط العنوان العلوي */
+        .top-bar {
+            background: linear-gradient(135deg, var(--primary), #81C784);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .top-bar h1 { margin: 0; font-size: 1.4rem; font-weight: 900; }
+        .school-info { font-size: 0.8rem; opacity: 0.9; }
+
+        /* منطقة الترحيب */
+        .welcome-area {
+            padding: 20px;
+            text-align: center;
+        }
+        .kid-avatar {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* شبكة اختيار الصفوف */
+        .grade-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 10px 20px;
+        }
+        .grade-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 0 #ddd;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .grade-card:active { transform: translateY(4px); box-shadow: 0 4px 0 #ddd; }
+        .grade-card.active { border-color: var(--primary); background: #E8F5E9; }
+        .grade-card i { font-size: 2rem; color: var(--accent); margin-bottom: 10px; display: block; }
+        .grade-card span { font-weight: 700; font-size: 1.1rem; }
+
+        /* تبديل الفصل الدراسي */
+        .sem-switch {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px;
+        }
+        .sem-btn {
+            background: #ddd;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Cairo';
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .sem-btn.active { background: var(--secondary); color: var(--text); }
+
+        /* قائمة السور */
+        .video-list {
+            padding: 10px 20px 100px 20px;
+            display: grid;
+            gap: 15px;
+        }
+        .video-item {
+            background: var(--white);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .play-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .surah-info b { display: block; font-size: 1.1rem; }
+        .surah-info small { color: #888; }
+
+        /* مشغل الفيديو */
+        .player-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        .player-content { width: 100%; max-width: 600px; margin: auto; padding: 10px; }
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .close-btn {
+            color: white;
+            background: #ff3b30;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Cairo';
+            font-weight: bold;
+            width: 100%;
+        }
+
+        /* شريط التنقل السفلي */
+        .nav-bottom {
+            position: fixed;
+            bottom: 0; width: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 2px solid #eee;
+            z-index: 900;
+        }
+        .nav-item {
+            border: none;
+            background: none;
+            color: #888;
+            font-family: 'Cairo';
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 2px; }
+
+        /* حركات أنيميشن */
+        @keyframes pop {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="school-info">مدرسة المروج للتعليم الأساسي</div>
+        <h1>منصة براعم المروج 🌱</h1>
+    </div>
+
+    <div class="welcome-area">
+        <span class="kid-avatar">✨</span>
+        <h2 id="welcome-text">مرحباً بك يا بطل!</h2>
+        <p>اختر صفك لنبدأ رحلة الحفظ الجميلة</p>
+    </div>
+
+    <div class="grade-selector">
+        <div class="grade-card" onclick="selectGrade(1, this)">
+            <i class="fas fa-1"></i>
+            <span>الصف الأول</span>
+        </div>
+        <div class="grade-card" onclick="selectGrade(2, this)">
+            <i class="fas fa-2"></i>
+            <span>الصف الثاني</span>
+        </div>
+        <div class="grade-card" onclick="selectGrade(3, this)">
+            <i class="fas fa-3"></i>
+            <span>الصف الثالث</span>
+        </div>
+        <div class="grade-card" onclick="selectGrade(4, this)">
+            <i class="fas fa-4"></i>
+            <span>الصف الرابع</span>
+        </div>
+    </div>
+
+    <div class="sem-switch">
+        <button class="sem-btn active" onclick="changeSem(1, this)">الفصل الأول</button>
+        <button class="sem-btn" onclick="changeSem(2, this)">الفصل الثاني</button>
+    </div>
+
+    <div id="video-list" class="video-list">
+        </div>
+
+    <div id="player-modal" class="player-modal">
+        <div class="player-content">
+            <div class="video-frame">
+                <iframe id="youtube-frame" width="100%" height="100%" src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen"></iframe>
+            </div>
+            <button class="close-btn" onclick="closePlayer()">إغلاق الفيديو ❌</button>
+        </div>
+    </div>
+
+    <nav class="nav-bottom">
+        <button class="nav-item active" onclick="location.reload()">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </button>
+        <button class="nav-item" onclick="alert('قريباً: تحديات المروج!')">
+            <i class="fas fa-star"></i>
+            <span>تحدياتي</span>
+        </button>
+        <button class="nav-item" onclick="alert('فكرة وإعداد: أ. أميرة الشنفري')">
+            <i class="fas fa-info-circle"></i>
+            <span>عن المنصة</span>
+        </button>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // 1. إعداد الاتصال بـ Supabase
+    // استبدل الروابط بالروابط الخاصة بمشروعك في Supabase
+    const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL'; 
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentGrade = 1;
+    let currentSem = 1;
+
+    // 2. وظيفة جلب البيانات من Supabase
+    async function fetchVideos() {
+        const list = document.getElementById('video-list');
+        
+        // إظهار مؤشر تحميل بسيط
+        list.innerHTML = '<p style="text-align:center;">جاري تحميل الآيات... 🔄</p>';
+
+        try {
+            // جلب البيانات مع الفلترة حسب الصف والفصل
+            const { data: videos, error } = await supabase
+                .from('videos') // اسم الجدول في Supabase
+                .select('*')
+                .eq('grade', currentGrade)
+                .eq('semester', currentSem);
+
+            if (error) throw error;
+
+            renderVideos(videos);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            list.innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في تحميل البيانات!</p>';
+        }
+    }
+
+    // 3. وظيفة عرض الفيديوهات في الصفحة
+    function renderVideos(videos) {
+        const list = document.getElementById('video-list');
+        list.innerHTML = '';
+        
+        if (!videos || videos.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:#888;">لا توجد فيديوهات مضافة لهذا الصف حالياً.. ⏳</p>';
+            return;
+        }
+
+        videos.forEach(v => {
+            const item = document.createElement('div');
+            item.className = 'video-item animate-pop';
+            
+            // استخراج معرف اليوتيوب من الرابط إذا كان الرابط كاملاً
+            const videoId = extractYouTubeId(v.video_url);
+
+            item.innerHTML = `
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="surah-info">
+                    <b>${v.title}</b>
+                    <small>اضغط للاستماع والحفظ</small>
+                </div>
+            `;
+            item.onclick = () => openPlayer(videoId);
+            list.appendChild(item);
+        });
+    }
+
+    // وظيفة مساعدة لاستخراج ID الفيديو من رابط يوتيوب
+    function extractYouTubeId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : url;
+    }
+
+    // 4. وظائف التحكم (تغيير الصف والفصل)
+    function selectGrade(grade, element) {
+        currentGrade = grade;
+        document.querySelectorAll('.grade-card').forEach(c => c.classList.remove('active'));
+        element.classList.add('active');
+        fetchVideos(); // جلب بيانات جديدة عند تغيير الصف
+    }
+
+    function changeSem(sem, element) {
+        currentSem = sem;
+        document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
+        element.classList.add('active');
+        fetchVideos(); // جلب بيانات جديدة عند تغيير الفصل
+    }
+
+    function openPlayer(videoId) {
+        const modal = document.getElementById('player-modal');
+        const iframe = document.getElementById('youtube-frame');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        modal.style.display = 'flex';
+    }
+
+    function closePlayer() {
+        const modal = document.getElementById('player-modal');
+        const iframe = document.getElementById('youtube-frame');
+        iframe.src = '';
+        modal.style.display = 'none';
+    }
+
+    // التشغيل الأول عند فتح الصفحة
+    window.onload = () => {
+        fetchVideos();
+    };
+</script>
+</body>
+</html>
